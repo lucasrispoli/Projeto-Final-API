@@ -42,13 +42,13 @@ public class CarrinhoService {
 
     public CarrinhoResponseDTO finalizarPedido(Long id) {
         List<Carrinho> carrinho = repository.carregarPedidos(id);
-        List<ProdutosResponseDTO> produtoSDTO = new ArrayList<>();
+        List<PacoteProdutoResponseDTO> produtoSDTO = new ArrayList<>();
         BigDecimal total = BigDecimal.ZERO;
         Pedido pedido = carrinho.get(0).getPedido();
         Produto produto;
         for (Carrinho item : carrinho) {
             produto = item.getProduto();
-            produtoSDTO.add(new ProdutosResponseDTO(produto.getNome(), produto.getValor(), produto.getCategoria().getNome(),
+            produtoSDTO.add(new PacoteProdutoResponseDTO(produto.getNome(), produto.getValor(), produto.getCategoria().getNome(),
                             item.getQuantidade(), item.getDesconto()));
                             total = total.add(produto.getValor().multiply(new BigDecimal(item.getQuantidade())));
         }
