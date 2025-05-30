@@ -3,11 +3,9 @@ package org.serratec.backend.entity;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Produto {
@@ -23,8 +21,8 @@ public class Produto {
 	private Categoria categoria;
 
 	@OneToMany(mappedBy = "produto")
-	@JsonManagedReference
-	private List<Pedido_Produto> pedidos;
+	@JsonManagedReference(value = "produto-itens")
+	private List<Carrinho> pedidos;
 
 	public Long getId() {
 		return id;
@@ -58,11 +56,11 @@ public class Produto {
 		this.categoria = categoria;
 	}
 
-	public List<Pedido_Produto> getPedidos() {
+	public List<Carrinho> getPedidos() {
 		return pedidos;
 	}
 
-	public void setPedidos(List<Pedido_Produto> pedidos) {
+	public void setPedidos(List<Carrinho> pedidos) {
 		this.pedidos = pedidos;
 	}
 }

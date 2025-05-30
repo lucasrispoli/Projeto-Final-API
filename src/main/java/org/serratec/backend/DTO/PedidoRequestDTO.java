@@ -3,7 +3,7 @@ package org.serratec.backend.DTO;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.CurrentTimestamp;
 import org.serratec.backend.entity.Cliente;
-import org.serratec.backend.entity.Pedido_Produto;
+import org.serratec.backend.entity.Carrinho;
 import org.serratec.backend.enums.StatusEnum;
 
 import java.time.LocalDateTime;
@@ -17,7 +17,7 @@ public class PedidoRequestDTO {
     @NotNull
     private StatusEnum status;
     private Cliente cliente;
-    private List<Pedido_Produto> itens;
+    private List<Carrinho> itens;
 
 
     public void setCliente(Cliente cliente) {
@@ -36,7 +36,7 @@ public class PedidoRequestDTO {
         this.status = status;
     }
 
-    public void setItens(List<Pedido_Produto> itens) {
+    public void setItens(List<Carrinho> itens) {
         this.itens = itens;
     }
 
@@ -48,7 +48,7 @@ public class PedidoRequestDTO {
         return status;
     }
 
-    public List<Pedido_Produto> getItens() {
+    public List<Carrinho> getItens() {
         return itens;
     }
 }
