@@ -1,17 +1,18 @@
 package org.serratec.backend.DTO;
 
+import java.math.BigDecimal;
+
 import org.serratec.backend.entity.Categoria;
 import org.serratec.backend.entity.Produto;
 
-import java.math.BigDecimal;
-import java.util.List;
+import jakarta.validation.constraints.Min;
 
 public class ProdutoRequestDTO {
 
 
     private String nome;
 
-//    Tem que pôr para ser maior que zero
+    @Min(0)
     private BigDecimal valor;
 
     private Categoria categoria;

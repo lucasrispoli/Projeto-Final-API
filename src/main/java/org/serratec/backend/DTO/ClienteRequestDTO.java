@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 public class ClienteRequestDTO {
 	@NotBlank
 	private String nome;
+	@NotBlank
 	private String telefone;
 	@Email
 	private String email;
