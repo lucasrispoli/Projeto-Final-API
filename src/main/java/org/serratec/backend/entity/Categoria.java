@@ -15,9 +15,8 @@ public class Categoria {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Enumerated(EnumType.STRING)
-	private CategoriaEnum nome;
+
+	private String nome;
 
 	public Long getId() {
 		return id;
@@ -27,11 +26,11 @@ public class Categoria {
 		this.id = id;
 	}
 
-	public CategoriaEnum getNome() {
+	public String getNome() {
 		return nome;
 	}
 
-	public void setNome(CategoriaEnum nome) {
+	public void setNome(String nome) {
 		this.nome = nome;
 	}
 }
