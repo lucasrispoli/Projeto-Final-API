@@ -1,6 +1,11 @@
 package org.serratec.backend.DTO;
 
-import java.math.BigDecimal;
+import jdk.jshell.Snippet;
+import org.serratec.backend.enums.StatusEnum;
 
-public record CarrinhoResponseDTO(Integer quantidade, BigDecimal PrecoUnidade, BigDecimal desconto, PedidoResponseDTO pedidoResponseDTO, ProdutoResponseDTO produtoResponseDTO) {
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+
+public record CarrinhoResponseDTO(LocalDateTime aberturaPedido, StatusEnum status, List<ProdutosResponseDTO> produto, BigDecimal total)  {
 }

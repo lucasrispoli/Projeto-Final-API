@@ -5,5 +5,5 @@ import org.serratec.backend.enums.CategoriaEnum;
 
 import java.math.BigDecimal;
 
-public record ProdutoResponseDTO(String nome, BigDecimal valor, String categoria) {
+public record ProdutosResponseDTO(String nome, BigDecimal valor, String categoria, Integer quantidade, BigDecimal desconto) {
 }
