@@ -3,14 +3,12 @@ package org.serratec.backend.service;
 import org.serratec.backend.DTO.ProdutoRequestDTO;
 import org.serratec.backend.DTO.ProdutoResponseDTO;
 import org.serratec.backend.entity.Produto;
-import org.serratec.backend.exception.ClienteException;
+import org.serratec.backend.exception.ProdutoException;
 import org.serratec.backend.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProdutoService {
@@ -29,11 +27,9 @@ public class ProdutoService {
 
         repository.save(produtoEntity);
 
-        return new  ProdutoResponseDTO(produtoEntity.getNome(), produtoEntity.getValor(), produtoEntity.getCategoria().getNome());
+        return new ProdutoResponseDTO(produtoEntity.getNome(), produtoEntity.getValor(), produtoEntity.getCategoria());
 
     }
-
-
     public List<ProdutoResponseDTO> inserirVarios(List<ProdutoRequestDTO> produtoDTOs) {
         List<ProdutoResponseDTO> produtos = new ArrayList<>();
 
@@ -47,22 +43,20 @@ public class ProdutoService {
 
             repository.save(produtoEntity);
 
-            ProdutoResponseDTO prodRespDTO = new ProdutoResponseDTO(produtoEntity.getNome(), produtoEntity.getValor(),
-                    produtoEntity.getCategoria().getNome());
+            ProdutoResponseDTO responseDTO = new ProdutoResponseDTO(produtoEntity.getNome(), produtoEntity.getValor(),
+                    produtoEntity.getCategoria());
 
-            produtos.add(prodRespDTO);
+            produtos.add(responseDTO);
         }
 
         return produtos;
     }
-
-
     public List<ProdutoResponseDTO> listar() {
-        List<Produto> produtos =  repository.findAll();
-        List<ProdutoResponseDTO> produtosDTO =  new ArrayList<>();
+        List<Produto> produtos = repository.findAll();
+        List<ProdutoResponseDTO> produtosDTO = new ArrayList<>();
 
         for (Produto p : produtos) {
-            produtosDTO.add(new ProdutoResponseDTO(p.getNome(),p.getValor(), p.getCategoria().getNome()));
+            produtosDTO.add(new ProdutoResponseDTO(p.getNome(), p.getValor(), p.getCategoria()));
         }
         return produtosDTO;
     }
@@ -78,35 +72,28 @@ public class ProdutoService {
         produtoEntity.setCategoria(produtoDTO.getCategoria());
         repository.save(produtoEntity);
 
-        return new ProdutoResponseDTO(produtoEntity.getNome(), produtoEntity.getValor(),
-                produtoEntity.getCategoria().getNome());
-    }
+        ProdutoResponseDTO prodRespDTO = new ProdutoResponseDTO(produtoEntity.getNome(), produtoEntity.getValor(),
+                produtoEntity.getCategoria());
 
+        return prodRespDTO;
+    }
 
     public void deletar(Long id) {
         verificaProdPorId(id);
         repository.deleteById(id);
     }
-
-
-    private void verificaProdPorNome(ProdutoRequestDTO p) {
-        Optional<Produto> produto = repository.findByNome(p.getNome());
-
-        if (produto.isPresent()) {
-//            USUÁRIO JÁ EXISTE
-            throw new ClienteException("MUDAR O TRATAMENTO DE ERRO, SÓ COLOQUEI PARA NÃO DAR ERRO");
-        }
-    }
-
-
+    //VERIFICA SE O ID DO PRODUTO INFORMADO FOI ENCONTRADO
     private void verificaProdPorId(Long id) {
-        Optional<Produto> produto = repository.findById(id);
-
-        if (produto.isEmpty()) {
-//            USUARIO NÃO EXISTE
-            throw new ClienteException("MUDAR O TRATAMENTO DE ERRO, SÓ COLOQUEI PARA NÃO DAR ERRO");
+        if (!repository.existsById(id)) {
+            throw new ProdutoException("Produto com ID " + id + " não encontrado.");
         }
+    }
+ //VERIFICA SE O NOME DO PRODUTO ESTA SENDO CADASTRADO NOVAMENTE
+    private void verificaProdPorNome(ProdutoRequestDTO dto) {
+        if (repository.existsByNome(dto.getNome())) {
+            throw new ProdutoException("Produto com nome '" + dto.getNome() + "' já cadastrado.");
+        }
+    }
     }
 
 
-}
