@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import org.serratec.backend.entity.Endereco;
 
 public class ClienteRequestDTO {
 	@NotBlank
@@ -14,8 +15,45 @@ public class ClienteRequestDTO {
 	private String email;
 	@CPF
 	private String cpf;
-	
-	
+
+	private String senha;
+
+	private String complemento;
+	private String cep;
+	private Endereco endereco;
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
 	public String getNome() {
 		return nome;
 	}
