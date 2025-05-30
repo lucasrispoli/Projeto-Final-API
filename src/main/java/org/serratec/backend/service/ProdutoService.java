@@ -1,7 +1,5 @@
 package org.serratec.backend.service;
 
-import org.apache.catalina.connector.ClientAbortException;
-import org.aspectj.apache.bcel.classfile.Module;
 import org.serratec.backend.DTO.ProdutoRequestDTO;
 import org.serratec.backend.DTO.ProdutoResponseDTO;
 import org.serratec.backend.entity.Produto;
@@ -19,6 +17,7 @@ public class ProdutoService {
 
     @Autowired
     private ProdutoRepository repository;
+
 
     public ProdutoResponseDTO inserir(ProdutoRequestDTO produtoDTO) {
         verificaProdPorNome(produtoDTO);
@@ -58,7 +57,6 @@ public class ProdutoService {
     }
 
 
-    //Deverá exibir a categoria de cada produto
     public List<ProdutoResponseDTO> listar() {
         List<Produto> produtos =  repository.findAll();
         List<ProdutoResponseDTO> produtosDTO =  new ArrayList<>();
@@ -69,26 +67,48 @@ public class ProdutoService {
         return produtosDTO;
     }
 
-//    public void deletar(Long id) {
-//        verificaProdPorId(id);
-//        repository.deleteById(id);
-//    }
+
+    public ProdutoResponseDTO alterar(Long id, ProdutoRequestDTO produtoDTO) {
+        verificaProdPorId(id);
+
+        Produto produtoEntity = new Produto();
+        produtoEntity.setId(id);
+        produtoEntity.setNome(produtoDTO.getNome());
+        produtoEntity.setValor(produtoDTO.getValor());
+        produtoEntity.setCategoria(produtoDTO.getCategoria());
+        repository.save(produtoEntity);
+
+        ProdutoResponseDTO prodRespDTO = new ProdutoResponseDTO(produtoEntity.getNome(), produtoEntity.getValor(),
+                produtoEntity.getCategoria());
+
+    return prodRespDTO;
+    }
+
+
+    public void deletar(Long id) {
+        verificaProdPorId(id);
+        repository.deleteById(id);
+    }
 
 
     private void verificaProdPorNome(ProdutoRequestDTO p) {
         Optional<Produto> produto = repository.findByNome(p.getNome());
 
         if (produto.isPresent()) {
+//            USUÁRIO JÁ EXISTE
             throw new ClienteException("MUDAR O TRATAMENTO DE ERRO, SÓ COLOQUEI PARA NÃO DAR ERRO");
         }
     }
-//    private void verificaProdPorId(Long id) {
-//        Optional<Produto> produto = repository.findById(id);
-//
-//        if (produto.isEmpty()) {
-//            throw new ClienteException("MUDAR O TRATAMENTO DE ERRO, SÓ COLOQUEI PARA NÃO DAR ERRO");
-//        }
-//    }
+
+
+    private void verificaProdPorId(Long id) {
+        Optional<Produto> produto = repository.findById(id);
+
+        if (produto.isEmpty()) {
+//            USUARIO NÃO EXISTE
+            throw new ClienteException("MUDAR O TRATAMENTO DE ERRO, SÓ COLOQUEI PARA NÃO DAR ERRO");
+        }
+    }
 
 
 }

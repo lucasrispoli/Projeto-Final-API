@@ -31,11 +31,13 @@ public class ProdutoController {
         return ResponseEntity.ok(service.listar());
     }
 
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProdutoResponseDTO inserir(@RequestBody ProdutoRequestDTO produto) {
         return service.inserir(produto);
     }
+
 
     @PostMapping("/varios")
     @ResponseStatus(HttpStatus.CREATED)
@@ -43,7 +45,17 @@ public class ProdutoController {
         return service.inserirVarios(produtos);
     }
 
-//    @PutMapping
-//    @DeleteMapping
+
+    @PutMapping("{id}")
+    public ResponseEntity<ProdutoResponseDTO> atualizar (@PathVariable Long id, @RequestBody ProdutoRequestDTO produto) {
+        return ResponseEntity.ok(service.alterar(id, produto));
+    }
+
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> remover(@PathVariable Long id) {
+        service.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }
