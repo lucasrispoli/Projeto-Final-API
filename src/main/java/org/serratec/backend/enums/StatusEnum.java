@@ -2,6 +2,6 @@ package org.serratec.backend.enums;
 
 public enum StatusEnum {
 	
-	PAGO, PREPARACAO, CANCELADO, ENVIADO, ENTREGUE;
+	ABERTO, PAGO, PREPARACAO, CANCELADO, ENVIADO, ENTREGUE;
 
 }

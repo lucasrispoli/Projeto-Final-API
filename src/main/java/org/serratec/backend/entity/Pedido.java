@@ -3,17 +3,11 @@ package org.serratec.backend.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.persistence.*;
+import org.hibernate.annotations.CurrentTimestamp;
 import org.serratec.backend.enums.StatusEnum;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 
 @Entity
 public class Pedido {
@@ -21,16 +15,58 @@ public class Pedido {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@CurrentTimestamp
 	private LocalDateTime dataPedido;
 	
 	@Enumerated(EnumType.STRING)
 	private StatusEnum status;
-	
-	@OneToMany(mappedBy = "pedido")
-	@JsonManagedReference
-	private List<Pedido_Produto> itens;
-	
-	
-	
 
+	@OneToMany(mappedBy = "pedido")
+	@JsonManagedReference(value = "pedido-itens")
+	private List<Pedido_Produto> itens;
+
+	@ManyToOne
+	@JoinColumn(name = "id_cliente")
+	private Cliente cliente;
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setDataPedido(LocalDateTime dataPedido) {
+		this.dataPedido = dataPedido;
+	}
+
+	public void setStatus(StatusEnum status) {
+		this.status = status;
+	}
+
+	public void setItens(List<Pedido_Produto> itens) {
+		this.itens = itens;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public LocalDateTime getDataPedido() {
+		return dataPedido;
+	}
+
+	public StatusEnum getStatus() {
+		return status;
+	}
+
+	public List<Pedido_Produto> getItens() {
+		return itens;
+	}
 }
