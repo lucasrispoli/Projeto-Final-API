@@ -19,11 +19,11 @@ public class Produto {
 	private BigDecimal valor;
 
 	@ManyToOne
-	@JoinColumn(name = "id_categorida")
+	@JoinColumn(name = "id_categoria")
 	private Categoria categoria;
 
 	@OneToMany(mappedBy = "produto")
-	@JsonManagedReference(value = "produto-itens")
+	@JsonManagedReference
 	private List<Pedido_Produto> pedidos;
 
 	public Long getId() {
@@ -50,4 +50,19 @@ public class Produto {
 		this.valor = valor;
 	}
 
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
+	public List<Pedido_Produto> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido_Produto> pedidos) {
+		this.pedidos = pedidos;
+	}
 }
