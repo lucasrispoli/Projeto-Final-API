@@ -6,7 +6,7 @@ import org.serratec.backend.entity.Produto;
 
 import java.math.BigDecimal;
 
-public class PedidoProdutoRequestDTO {
+public class CarrinhoRequestDTO {
     private Integer quantidade;
     @JsonIgnore
     private BigDecimal precoUnidade;
@@ -14,7 +14,7 @@ public class PedidoProdutoRequestDTO {
     private Pedido pedido;
     private Produto produto;
 
-    public PedidoProdutoRequestDTO(Integer quantidade, BigDecimal precoUnidade, BigDecimal desconto, Pedido pedido, Produto produto) {
+    public CarrinhoRequestDTO(Integer quantidade, BigDecimal precoUnidade, BigDecimal desconto, Pedido pedido, Produto produto) {
         this.quantidade = quantidade;
         this.precoUnidade = precoUnidade;
         this.desconto = desconto;
@@ -22,7 +22,7 @@ public class PedidoProdutoRequestDTO {
         this.produto = produto;
     }
 
-    public PedidoProdutoRequestDTO() {
+    public CarrinhoRequestDTO() {
     }
 
     public void setQuantidade(Integer quantidade) {

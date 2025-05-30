@@ -24,7 +24,7 @@ public class Pedido {
 
 	@OneToMany(mappedBy = "pedido")
 	@JsonManagedReference(value = "pedido-itens")
-	private List<Pedido_Produto> itens;
+	private List<Carrinho> itens;
 
 	@ManyToOne
 	@JoinColumn(name = "id_cliente")
@@ -50,7 +50,7 @@ public class Pedido {
 		this.status = status;
 	}
 
-	public void setItens(List<Pedido_Produto> itens) {
+	public void setItens(List<Carrinho> itens) {
 		this.itens = itens;
 	}
 
@@ -66,7 +66,7 @@ public class Pedido {
 		return status;
 	}
 
-	public List<Pedido_Produto> getItens() {
+	public List<Carrinho> getItens() {
 		return itens;
 	}
 }
