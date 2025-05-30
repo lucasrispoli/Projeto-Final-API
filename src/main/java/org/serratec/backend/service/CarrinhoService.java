@@ -1,9 +1,6 @@
 package org.serratec.backend.service;
 
-import org.serratec.backend.DTO.CarrinhoRequestDTO;
-import org.serratec.backend.DTO.CarrinhoResponseDTO;
-import org.serratec.backend.DTO.PedidoResponseDTO;
-import org.serratec.backend.DTO.ProdutoResponseDTO;
+import org.serratec.backend.DTO.*;
 import org.serratec.backend.entity.Pedido;
 import org.serratec.backend.entity.Carrinho;
 import org.serratec.backend.entity.Produto;
@@ -12,6 +9,7 @@ import org.serratec.backend.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,17 +40,19 @@ public class CarrinhoService {
     }
 
 
-    public List<CarrinhoResponseDTO> finalizarPedido(Long id) {
+    public CarrinhoResponseDTO finalizarPedido(Long id) {
         List<Carrinho> carrinho = repository.carregarPedidos(id);
-        List<CarrinhoResponseDTO> carrinhoDTO = new ArrayList<>();
+        List<ProdutosResponseDTO> produtoSDTO = new ArrayList<>();
+        BigDecimal total = BigDecimal.ZERO;
+        Pedido pedido = carrinho.get(0).getPedido();
+        Produto produto;
         for (Carrinho item : carrinho) {
-            Pedido pedido = item.getPedido();
-            Produto produto = item.getProduto();
-            carrinhoDTO.add(new CarrinhoResponseDTO(item.getQuantidade(), item.getPrecoUnidade(), item.getDesconto(),
-                new PedidoResponseDTO(pedido.getId(), pedido.getDataPedido(), pedido.getStatus()),
-                new ProdutoResponseDTO( produto.getNome(), produto.getValor(), produto.getCategoria().getNome())));
+            produto = item.getProduto();
+            produtoSDTO.add(new ProdutosResponseDTO(produto.getNome(), produto.getValor(), produto.getCategoria().getNome(),
+                            item.getQuantidade(), item.getDesconto()));
+                            total = total.add(produto.getValor().multiply(new BigDecimal(item.getQuantidade())));
         }
-        return carrinhoDTO;
+        return new CarrinhoResponseDTO(pedido.getDataPedido(), pedido.getStatus(), produtoSDTO, total);
     }
 //
 }

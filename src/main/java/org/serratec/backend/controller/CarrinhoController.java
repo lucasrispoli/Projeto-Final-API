@@ -25,7 +25,7 @@ public class CarrinhoController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<List<CarrinhoResponseDTO>> finalizarPedido(@PathVariable Long id) {
+    public ResponseEntity<CarrinhoResponseDTO> finalizarPedido(@PathVariable Long id) {
         return ResponseEntity.ok(service.finalizarPedido(id));
     }
 }
