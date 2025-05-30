@@ -8,3 +8,5 @@ import java.util.List;
 
 public record CarrinhoResponseDTO(LocalDateTime aberturaPedido, StatusEnum status, List<PacoteProdutoResponseDTO> produto, BigDecimal total)  {
 }
+
+

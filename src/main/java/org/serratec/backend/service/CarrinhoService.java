@@ -7,6 +7,7 @@ import org.serratec.backend.entity.Produto;
 import org.serratec.backend.repository.CarrinhoRepository;
 import org.serratec.backend.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -29,30 +30,40 @@ public class CarrinhoService {
     public Carrinho InserPedidoProduto(CarrinhoRequestDTO carrinhoDTO) {
         Carrinho carrinho = new Carrinho();
         Pedido pedido = pedidoService.buscarPorId(carrinhoDTO.getPedido().getId());
-        Optional<Produto> produto= repositoryProduto.findById(carrinhoDTO.getProduto().getId());
+        Optional<Produto> produto = repositoryProduto.findById(carrinhoDTO.getProduto().getId());
         carrinho.setQuantidade(carrinhoDTO.getQuantidade());
         carrinho.setPrecoUnidade(produto.get().getValor());
         carrinho.setDesconto(carrinhoDTO.getDesconto());
         carrinho.setPedido(pedido);
         carrinho.setProduto(produto.get());
         carrinho = repository.save(carrinho);
+
         return carrinho;
     }
 
 
     public CarrinhoResponseDTO finalizarPedido(Long id) {
         List<Carrinho> carrinho = repository.carregarPedidos(id);
-        List<PacoteProdutoResponseDTO> produtoSDTO = new ArrayList<>();
+        List<ProdutosResponseDTO> produtosDTO = new ArrayList<>();
         BigDecimal total = BigDecimal.ZERO;
         Pedido pedido = carrinho.get(0).getPedido();
         Produto produto;
         for (Carrinho item : carrinho) {
             produto = item.getProduto();
-            produtoSDTO.add(new PacoteProdutoResponseDTO(produto.getNome(), produto.getValor(), produto.getCategoria().getNome(),
+            produtosDTO.add(new ProdutosResponseDTO(produto.getNome(), produto.getValor(), produto.getCategoria().getNome(),
                             item.getQuantidade(), item.getDesconto()));
                             total = total.add(produto.getValor().multiply(new BigDecimal(item.getQuantidade())));
         }
-        return new CarrinhoResponseDTO(pedido.getDataPedido(), pedido.getStatus(), produtoSDTO, total);
+        return new CarrinhoResponseDTO(pedido.getDataPedido(), pedido.getStatus(), produtosDTO, total);
     }
-//
+
+    public ResponseEntity<Carrinho> removerPorId(Long id) {
+        Optional<Carrinho> item = repository.findById(id);
+        if(item.isPresent()){
+            Carrinho carrinho = item.get();
+            repository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
