@@ -20,7 +20,7 @@ public class CategoriaService {
 
 
     public CategoriaResponseDTO inserir(CategoriaRequestDTO categoriaDTO) {
-        verificaProdPorNome(categoriaDTO);
+        verificaCatgPorNome(categoriaDTO);
 
         Categoria categoriaEntity = new Categoria();
         categoriaEntity.setNome(categoriaDTO.getNome());
@@ -36,7 +36,7 @@ public class CategoriaService {
         List<CategoriaResponseDTO> categorias = new ArrayList<>();
 
         for (CategoriaRequestDTO dto : categoriaDTOs) {
-            verificaProdPorNome(dto);
+            verificaCatgPorNome(dto);
 
             Categoria categoriaEntity = new Categoria();
             categoriaEntity.setNome(dto.getNome());
@@ -64,7 +64,7 @@ public class CategoriaService {
 
 
     public CategoriaResponseDTO alterar(Long id, CategoriaRequestDTO categoriaDTO) {
-        verificaProdPorId(id);
+        verificaCatgPorId(id);
 
         Categoria categoriaEntity = new Categoria();
         categoriaEntity.setId(id);
@@ -76,12 +76,12 @@ public class CategoriaService {
 
 
     public void deletar(Long id) {
-        verificaProdPorId(id);
+        verificaCatgPorId(id);
         repository.deleteById(id);
     }
 
 
-    private void verificaProdPorNome(CategoriaRequestDTO p) {
+    private void verificaCatgPorNome(CategoriaRequestDTO p) {
         Optional<Categoria> categoria = repository.findByNome(p.getNome());
 
         if (categoria.isPresent()) {
@@ -91,7 +91,7 @@ public class CategoriaService {
     }
 
 
-    private void verificaProdPorId(Long id) {
+    private void verificaCatgPorId(Long id) {
         Optional<Categoria> categoria = repository.findById(id);
 
         if (categoria.isEmpty()) {
