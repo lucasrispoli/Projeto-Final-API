@@ -1,12 +1,18 @@
 package org.serratec.backend.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Cliente extends Usuario{
 
 	private String complemento;
 	private String cep;
+
+	@ManyToOne
+	@JoinColumn(name = "id_endereco")
+	private Endereco endereco;
 
 	public String getComplemento() {
 		return complemento;
@@ -24,4 +30,11 @@ public class Cliente extends Usuario{
 		this.cep = cep;
 	}
 
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
 }

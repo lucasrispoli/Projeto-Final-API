@@ -23,12 +23,12 @@ public class Pedido_Produto {
 	private BigDecimal desconto;
 	
 	@ManyToOne
-	@JsonManagedReference
+	@JsonBackReference(value = "pedido-itens")
 	@JoinColumn(name = "id_pedido")
 	private Pedido pedido;
 	
 	@ManyToOne
-	@JsonManagedReference
+	@JsonBackReference(value = "produto-itens")
 	@JoinColumn(name = "id_produto")
 	private Produto produto;
 	
