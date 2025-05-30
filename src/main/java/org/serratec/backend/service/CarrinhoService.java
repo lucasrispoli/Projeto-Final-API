@@ -50,7 +50,7 @@ public class CarrinhoService {
             Produto produto = item.getProduto();
             carrinhoDTO.add(new CarrinhoResponseDTO(item.getQuantidade(), item.getPrecoUnidade(), item.getDesconto(),
                 new PedidoResponseDTO(pedido.getId(), pedido.getDataPedido(), pedido.getStatus()),
-                new ProdutoResponseDTO( produto.getNome(), produto.getValor(), produto.getCategoria())));
+                new ProdutoResponseDTO( produto.getNome(), produto.getValor(), produto.getCategoria().getNome())));
         }
         return carrinhoDTO;
     }
