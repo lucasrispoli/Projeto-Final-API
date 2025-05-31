@@ -1,10 +1,10 @@
 package org.serratec.backend.service;
 
-import org.serratec.backend.DTO.PedidoRequestDTO;
-import org.serratec.backend.DTO.PedidoResponseDTO;
-import org.serratec.backend.DTO.AtualizaStatusDTO;
+import org.serratec.backend.DTO.*;
 import org.serratec.backend.entity.Cliente;
+import org.serratec.backend.entity.PK.Carrinho;
 import org.serratec.backend.entity.Pedido;
+import org.serratec.backend.entity.Produto;
 import org.serratec.backend.enums.StatusEnum;
 import org.serratec.backend.exception.PedidoException;
 import org.serratec.backend.repository.PedidoRepository;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,9 @@ public class PedidoService {
 
 	@Autowired
 	private ClienteService cService;
+
+//	@Autowired
+//	private CarrinhoService carrinhoService;
 
 	//ABRE UM PEDIDO PARA UM CLIENTE
 	public PedidoResponseDTO abrirPedido(PedidoRequestDTO pedidoResponseDTO) {
@@ -41,20 +45,28 @@ public class PedidoService {
 		if(!pedido.isPresent()){
 			throw new PedidoException("Pedido não encontrado!");
 		}
+
 		return new PedidoResponseDTO(pedido.get().getId(),pedido.get().getDataPedido(),pedido.get().getStatus());
 	}
 
-	//LISTAR TODOS OS PEDIDOS DO CLIENTE
-	public ResponseEntity<List<PedidoResponseDTO>> listarPedidos(Long IdCliente) {
-		List<Pedido> pedidos = repository.listarPedidosPorIdUsuario(IdCliente);
-		if(pedidos.isEmpty()){
-			throw new PedidoException("Nenhum pedido encontrado para o cliente com ID: " + IdCliente);
+	//LISTAR PEDIDOS POR ID DO CLIENTE
+	public List<ProdutoPedidoResponseDTO> buscarTodos(Long idCliente) {
+	List<Pedido> pedidos = repository.listarPedidosPorIdUsuario(idCliente);
+	List<ProdutoPedidoResponseDTO> pedidosDTO = new ArrayList<>();
+	List<ProdutoResponseDTO> produtosDTO = new ArrayList<>();
+	String categoria = null;
+		for (Pedido pedido : pedidos) {
+			List<Produto> produtos = repository.obterProdutosPorPedido(pedido.getId());
+			for (Produto produto : produtos) {
+					produtosDTO.add(new ProdutoResponseDTO(produto.getNome(),produto.getValor(), produto.getCategoria().getNome()));
+			}
+			pedidosDTO.add(new ProdutoPedidoResponseDTO(
+					pedido.getId(),
+					pedido.getDataPedido(),
+					pedido.getStatus(), produtosDTO));
+
 		}
-		return ResponseEntity.ok().body(
-				pedidos.stream()
-						.map(pedido -> new PedidoResponseDTO(pedido.getId(), pedido.getDataPedido(), pedido.getStatus()))
-						.toList()
-		);
+		return pedidosDTO;
 	}
 
 	//BUSCA UM PEDIDO POR ID PARA O CARRINHO

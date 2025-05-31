@@ -19,7 +19,7 @@ public class CarrinhoController {
     @PostMapping("/inserir")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Carrinho> inserirPedido(@RequestBody CarrinhoRequestDTO pedido) {
-        return ResponseEntity.ok(service.InserPedidoProduto(pedido));
+        return ResponseEntity.ok(service.inserirPedidoProduto(pedido));
     }
 
     @GetMapping("{id}")
@@ -32,7 +32,5 @@ public class CarrinhoController {
     public ResponseEntity<Carrinho> remover(@PathVariable Long id){
         return service.removerPorId(id);
     }
-
-
 
 }

@@ -27,18 +27,23 @@ public class CarrinhoService {
     @Autowired
     private ProdutoRepository repositoryProduto;
 
-    public Carrinho InserPedidoProduto(CarrinhoRequestDTO carrinhoDTO) {
-        Carrinho carrinho = new Carrinho();
+    public Carrinho inserirPedidoProduto(CarrinhoRequestDTO carrinhoDTO) {
         Pedido pedido = pedidoService.buscarPorId(carrinhoDTO.getPedido().getId());
-        Optional<Produto> produto = repositoryProduto.findById(carrinhoDTO.getProduto().getId());
+        if (pedido == null) {
+            throw new IllegalArgumentException("Pedido não encontrado com o ID: " + carrinhoDTO.getPedido().getId());
+        }
+
+        Produto produto = repositoryProduto.findById(carrinhoDTO.getProduto().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado com o ID: " + carrinhoDTO.getProduto().getId()));
+
+        Carrinho carrinho = new Carrinho();
         carrinho.setQuantidade(carrinhoDTO.getQuantidade());
-        carrinho.setPrecoUnidade(produto.get().getValor());
+        carrinho.setPrecoUnidade(produto.getValor());
         carrinho.setDesconto(carrinhoDTO.getDesconto());
         carrinho.setPedido(pedido);
-        carrinho.setProduto(produto.get());
-        carrinho = repository.save(carrinho);
+        carrinho.setProduto(produto);
 
-        return carrinho;
+        return repository.save(carrinho);
     }
 
 
@@ -66,4 +71,13 @@ public class CarrinhoService {
         }
         return ResponseEntity.notFound().build();
     }
+
+//    public List<CarrinhoResponseDTO> buscarItensPorIdCliente(Long idCliente) {
+//        List<Carrinho> carrinhos = repository.buscarItensPorIdPedido(idCliente);
+//        if (carrinhos.isEmpty()) {
+//            throw new IllegalArgumentException("Nenhum item encontrado para o cliente com ID: " + idCliente);
+//        }
+//
+//        return null;
+//    }
 }
