@@ -3,6 +3,7 @@ package org.serratec.backend.controller;
 import org.serratec.backend.DTO.AtualizaStatusDTO;
 import org.serratec.backend.DTO.PedidoRequestDTO;
 import org.serratec.backend.DTO.PedidoResponseDTO;
+import org.serratec.backend.DTO.ProdutoPedidoResponseDTO;
 import org.serratec.backend.entity.Pedido;
 import org.serratec.backend.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,8 @@ public class PedidoController {
         return ResponseEntity.ok(service.listarPorId(id));
     }
     @GetMapping("/listarCliente/{id}")
-    public ResponseEntity<List<PedidoResponseDTO>> buscarPedidoCliente(@PathVariable Long id) {
-        return service.listarPedidos(id);
+    public ResponseEntity<List<ProdutoPedidoResponseDTO>> buscarPedidoCliente(@PathVariable Long id) {
+       return ResponseEntity.ok(service.buscarTodos(id));
     }
 
     @PostMapping("/inserir")

@@ -3,6 +3,7 @@ package org.serratec.backend.DTO;
 import org.serratec.backend.enums.StatusEnum;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-public record PedidoResponseDTO(Long NumeroPedido, LocalDateTime dataDeEmissao, StatusEnum status) {
+public record PedidoResponseDTO(Long numeroPedido, LocalDateTime dataDeEmissao, StatusEnum status) {
 }
