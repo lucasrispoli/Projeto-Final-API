@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
+import org.serratec.backend.entity.PK.Carrinho;
 
 @Entity
 public class Produto {

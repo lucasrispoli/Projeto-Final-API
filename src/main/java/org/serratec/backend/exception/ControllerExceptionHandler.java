@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.serratec.backend.entity.Pedido;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +47,11 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(ClienteException.class)
 	protected ResponseEntity<Object> handleUsuarioException(ClienteException ex) {
+		return ResponseEntity.badRequest().body(ex.getMessage());
+	}
+
+	@ExceptionHandler(PedidoException.class)
+	protected ResponseEntity<Object> handlePedidoException(PedidoException ex) {
 		return ResponseEntity.badRequest().body(ex.getMessage());
 	}
 

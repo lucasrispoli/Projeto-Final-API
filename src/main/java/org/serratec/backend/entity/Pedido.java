@@ -5,6 +5,7 @@ import java.util.List;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CurrentTimestamp;
+import org.serratec.backend.entity.PK.Carrinho;
 import org.serratec.backend.enums.StatusEnum;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;

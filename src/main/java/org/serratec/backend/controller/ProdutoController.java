@@ -48,7 +48,6 @@ public class ProdutoController {
         return service.inserir(produto);
     }
 
-
     @PostMapping("/varios")
     @ResponseStatus(HttpStatus.CREATED)
     public List<ProdutoResponseDTO> inserirVarios(@Valid @RequestBody List<ProdutoRequestDTO> produtos) {

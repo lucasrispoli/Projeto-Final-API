@@ -1,5 +1,6 @@
 package org.serratec.backend.controller;
 
+import org.serratec.backend.DTO.AtualizaStatusDTO;
 import org.serratec.backend.DTO.PedidoRequestDTO;
 import org.serratec.backend.DTO.PedidoResponseDTO;
 import org.serratec.backend.entity.Pedido;
@@ -7,31 +8,42 @@ import org.serratec.backend.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/pedidos")
 public class PedidoController {
 
     @Autowired
-    private PedidoService pedidoService;
+    private PedidoService service;
+
+    @GetMapping("/listar/{id}")
+    public ResponseEntity<PedidoResponseDTO> buscarPedido(@PathVariable Long id) {
+        return ResponseEntity.ok(service.listarPorId(id));
+    }
+    @GetMapping("/listarCliente/{id}")
+    public ResponseEntity<List<PedidoResponseDTO>> buscarPedidoCliente(@PathVariable Long id) {
+        return service.listarPedidos(id);
+    }
 
     @PostMapping("/inserir")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<PedidoResponseDTO> inserirPedido(@Valid @RequestBody PedidoRequestDTO pedido) {
-        return ResponseEntity.ok(pedidoService.InserirPedido(pedido));
+    public PedidoResponseDTO inserirPedido(@Valid @RequestBody PedidoRequestDTO pedido) {
+        return service.abrirPedido(pedido);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<Pedido> buscarPedido(@PathVariable Long id) {
-        return ResponseEntity.ok(pedidoService.listarPorId(id));
+    @PatchMapping("/status/{id}")
+    public ResponseEntity<PedidoResponseDTO> atualizarStatus(@PathVariable Long id, @RequestBody AtualizaStatusDTO status){
+        return ResponseEntity.ok(service.atualizarStatus(id, status));
     }
+
+    @DeleteMapping("/cancelar/{id}")
+    public ResponseEntity<Void> cancelarPedido(@PathVariable Long id) {
+        return service.cancelarPedido(id);
+    }
+
 }
