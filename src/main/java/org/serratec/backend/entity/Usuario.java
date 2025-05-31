@@ -1,11 +1,7 @@
 package org.serratec.backend.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import jakarta.persistence.*;
+import org.serratec.backend.enums.StatusPessoaEnum;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -19,8 +15,17 @@ public class Usuario {
 	private String email;
 	private String cpf;
 	private String senha;
-	
-	
+	@Enumerated(EnumType.STRING)
+	private StatusPessoaEnum status;
+
+
+	public void setStatus(StatusPessoaEnum status) {
+		this.status = status;
+	}
+
+	public StatusPessoaEnum getStatus() {
+		return status;
+	}
 
 	public String getSenha() {
 		return senha;

@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.br.CPF;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import org.serratec.backend.entity.Endereco;
+import org.serratec.backend.enums.StatusPessoaEnum;
 
 public class ClienteRequestDTO {
 	@NotBlank
@@ -21,6 +22,15 @@ public class ClienteRequestDTO {
 	private String complemento;
 	private String cep;
 	private Endereco endereco;
+	private StatusPessoaEnum status;
+
+	public void setStatus(StatusPessoaEnum status) {
+		this.status = status;
+	}
+
+	public StatusPessoaEnum getStatus() {
+		return status;
+	}
 
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;

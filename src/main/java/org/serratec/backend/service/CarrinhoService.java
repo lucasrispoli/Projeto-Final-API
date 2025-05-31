@@ -2,7 +2,7 @@ package org.serratec.backend.service;
 
 import org.serratec.backend.DTO.*;
 import org.serratec.backend.entity.Pedido;
-import org.serratec.backend.entity.Carrinho;
+import org.serratec.backend.entity.PK.Carrinho;
 import org.serratec.backend.entity.Produto;
 import org.serratec.backend.repository.CarrinhoRepository;
 import org.serratec.backend.repository.ProdutoRepository;
@@ -44,13 +44,13 @@ public class CarrinhoService {
 
     public CarrinhoResponseDTO finalizarPedido(Long id) {
         List<Carrinho> carrinho = repository.carregarPedidos(id);
-        List<ProdutosResponseDTO> produtosDTO = new ArrayList<>();
+        List<PacoteProdutoResponseDTO> produtosDTO = new ArrayList<>();
         BigDecimal total = BigDecimal.ZERO;
         Pedido pedido = carrinho.get(0).getPedido();
         Produto produto;
         for (Carrinho item : carrinho) {
             produto = item.getProduto();
-            produtosDTO.add(new ProdutosResponseDTO(produto.getNome(), produto.getValor(), produto.getCategoria().getNome(),
+            produtosDTO.add(new PacoteProdutoResponseDTO(produto.getNome(), produto.getValor(), produto.getCategoria().getNome(),
                             item.getQuantidade(), item.getDesconto()));
                             total = total.add(produto.getValor().multiply(new BigDecimal(item.getQuantidade())));
         }

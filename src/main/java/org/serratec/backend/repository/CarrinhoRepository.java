@@ -1,6 +1,6 @@
 package org.serratec.backend.repository;
 
-import org.serratec.backend.entity.Carrinho;
+import org.serratec.backend.entity.PK.Carrinho;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

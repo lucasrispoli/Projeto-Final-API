@@ -1,4 +1,4 @@
-package org.serratec.backend.entity;
+package org.serratec.backend.entity.PK;
 
 import java.math.BigDecimal;
 
@@ -10,6 +10,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import org.serratec.backend.entity.Pedido;
+import org.serratec.backend.entity.Produto;
 
 @Entity
 public class Carrinho {

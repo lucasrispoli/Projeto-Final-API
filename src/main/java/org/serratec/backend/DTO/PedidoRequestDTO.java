@@ -3,7 +3,7 @@ package org.serratec.backend.DTO;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.CurrentTimestamp;
 import org.serratec.backend.entity.Cliente;
-import org.serratec.backend.entity.Carrinho;
+import org.serratec.backend.entity.PK.Carrinho;
 import org.serratec.backend.enums.StatusEnum;
 
 import java.time.LocalDateTime;
