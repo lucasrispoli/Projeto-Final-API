@@ -1,6 +1,7 @@
 package org.serratec.backend.DTO;
 
 import jakarta.validation.constraints.NotBlank;
+import org.serratec.backend.entity.Categoria;
 
 public class CategoriaRequestDTO {
 	
@@ -10,8 +11,8 @@ public class CategoriaRequestDTO {
     public CategoriaRequestDTO() {
     }
 
-    public CategoriaRequestDTO(String nome) {
-        this.nome = nome;
+    public CategoriaRequestDTO(Categoria categoria) {
+        this.nome = categoria.getNome();
     }
 
     public String getNome() {

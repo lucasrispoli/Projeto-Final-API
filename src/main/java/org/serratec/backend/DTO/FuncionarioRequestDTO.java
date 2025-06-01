@@ -1,8 +1,7 @@
 package org.serratec.backend.DTO;
 
 import jakarta.validation.constraints.Min;
-import org.serratec.backend.entity.Categoria;
-import org.serratec.backend.entity.Produto;
+import org.serratec.backend.entity.Funcionario;
 
 import java.math.BigDecimal;
 
@@ -22,15 +21,14 @@ public class FuncionarioRequestDTO {
     public FuncionarioRequestDTO() {
     }
 
-    public FuncionarioRequestDTO(String nome, String cargo, BigDecimal salario, String telefone, String email, String cpf, String senha, BigDecimal salario1) {
-        this.nome = nome;
-        this.cargo = cargo;
-        this.salario = salario;
-        this.telefone = telefone;
-        this.email = email;
-        this.cpf = cpf;
-        this.senha = senha;
-        this.salario = salario1;
+    public FuncionarioRequestDTO(Funcionario funcionario) {
+        this.nome = funcionario.getNome();
+        this.cargo = funcionario.getCargo();
+        this.salario = funcionario.getSalario();
+        this.telefone = funcionario.getTelefone();
+        this.email = funcionario.getEmail();
+        this.cpf = funcionario.getCpf();
+        this.senha = funcionario.getSenha();
     }
 
     public String getNome() {
@@ -47,14 +45,6 @@ public class FuncionarioRequestDTO {
 
     public void setCargo(String cargo) {
         this.cargo = cargo;
-    }
-
-    public BigDecimal getSalario() {
-        return salario;
-    }
-
-    public void setSalario(BigDecimal salario) {
-        this.salario = salario;
     }
 
     public String getTelefone() {
@@ -87,5 +77,13 @@ public class FuncionarioRequestDTO {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public BigDecimal getSalario() {
+        return salario;
+    }
+
+    public void setSalario(BigDecimal salario) {
+        this.salario = salario;
     }
 }
