@@ -53,10 +53,11 @@ public class PedidoService {
 	public List<ProdutoPedidoResponseDTO> buscarTodos(Long idCliente) {
 	List<Pedido> pedidos = repository.listarPedidosPorIdUsuario(idCliente);
 	List<ProdutoPedidoResponseDTO> pedidosDTO = new ArrayList<>();
-	List<ProdutoResponseDTO> produtosDTO = new ArrayList<>();
-	String categoria = null;
+
 		for (Pedido pedido : pedidos) {
+			List<ProdutoResponseDTO> produtosDTO = new ArrayList<>();
 			List<Produto> produtos = repository.obterProdutosPorPedido(pedido.getId());
+
 			for (Produto produto : produtos) {
 					produtosDTO.add(new ProdutoResponseDTO(produto.getNome(),produto.getValor(), produto.getCategoria().getNome()));
 			}

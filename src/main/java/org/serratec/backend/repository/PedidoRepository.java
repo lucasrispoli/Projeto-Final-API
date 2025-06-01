@@ -21,6 +21,6 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long>{
             "JOIN carrinho cr on cr.id_pedido = p.id\n" +
             "JOIN produto pd on cr.id_produto = pd.id\n" +
             "JOIN categoria c on c.id = pd.id_categoria\n" +
-            "WHERE p.id_cliente = :id;", nativeQuery = true)
+            "WHERE p.id = :id;", nativeQuery = true)
     List<Produto> obterProdutosPorPedido(Long id);
 }
