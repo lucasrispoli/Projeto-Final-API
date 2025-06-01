@@ -23,7 +23,12 @@ public class Funcionario extends Usuario {
 	public void setSalario(BigDecimal salario) {
 		this.salario = salario;
 	}
-	
-	
 
+	@Override
+	public String toString() {
+		return 	"Nome - " + super.getNome() +
+				", email - " + super.getEmail() +
+				", cargo - " + cargo +
+				", salário - " + salario;
+	}
 }

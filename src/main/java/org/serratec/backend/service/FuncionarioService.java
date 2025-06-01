@@ -3,6 +3,7 @@ package org.serratec.backend.service;
 import org.serratec.backend.DTO.FuncionarioRequestDTO;
 import org.serratec.backend.DTO.FuncionarioResponseDTO;
 import org.serratec.backend.DTO.PedidoResponseDTO;
+import org.serratec.backend.config.MailConfig;
 import org.serratec.backend.entity.Funcionario;
 import org.serratec.backend.entity.Pedido;
 import org.serratec.backend.entity.Perfil;
@@ -30,6 +31,9 @@ public class FuncionarioService {
     @Autowired
     private BCryptPasswordEncoder encoder;
 
+    @Autowired
+    private MailConfig mailConfig;
+
 
     public FuncionarioResponseDTO inserir(FuncionarioRequestDTO funcionarioDTO) {
         verificaFuncPorNome(funcionarioDTO);
@@ -46,6 +50,8 @@ public class FuncionarioService {
         funcionarioEntity.setPerfil(perfilService.buscar(Long.valueOf(3)));
 
         repository.save(funcionarioEntity);
+
+        mailConfig.enviar(funcionarioEntity.getEmail(), "Confirmação de Cadastro do Funcionário", "Funcionário:", funcionarioEntity.toString());
 
         return new FuncionarioResponseDTO(funcionarioEntity.getNome(), funcionarioEntity.getTelefone(),
                 funcionarioEntity.getEmail(), funcionarioEntity.getSalario());
@@ -75,6 +81,8 @@ public class FuncionarioService {
                     funcionarioEntity.getEmail(), funcionarioEntity.getSalario());
 
             funcionarios.add(responseDTO);
+
+            mailConfig.enviar(funcionarioEntity.getEmail(), "Confirmação de Cadastro do Funcionário", "Funcionário:", funcionarioEntity.toString());
         }
 
         return funcionarios;
@@ -133,6 +141,8 @@ public class FuncionarioService {
 
         repository.save(funcionarioEntity);
 
+        mailConfig.enviar(funcionarioEntity.getEmail(), "Alteração no cadastro do funcionário", "Funcionário:", funcionarioEntity.toString());
+
         return new FuncionarioResponseDTO(funcionarioEntity.getNome(), funcionarioEntity.getTelefone(),
                 funcionarioEntity.getEmail(), funcionarioEntity.getSalario());
 
@@ -142,6 +152,7 @@ public class FuncionarioService {
         Funcionario funcionario =  verificaFuncPorId(id).get();
         funcionario.setStatus(StatusPessoaEnum.INATIVO);
         repository.save(funcionario);
+        mailConfig.enviar(funcionario.getEmail(), "Funcionário deletado com sucesso", "Funcionário:", funcionario.toString());
     }
 
     //VERIFICA SE O ID DO PRODUTO INFORMADO FOI ENCONTRADO
