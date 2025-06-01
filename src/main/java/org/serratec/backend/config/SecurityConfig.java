@@ -52,8 +52,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers.frameOptions().disable());
 
-        http.addFilterBefore(new JwtAuthenticationFilter(
-                        authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), jwtUtil),
+        http.addFilterBefore(new JwtAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), jwtUtil),
                 UsernamePasswordAuthenticationFilter.class);
 
         http.addFilterBefore(new JwtAuthorizationFilter(
