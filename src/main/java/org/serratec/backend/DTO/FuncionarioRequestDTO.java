@@ -2,6 +2,7 @@ package org.serratec.backend.DTO;
 
 import jakarta.validation.constraints.Min;
 import org.serratec.backend.entity.Funcionario;
+import org.serratec.backend.enums.StatusPessoaEnum;
 
 import java.math.BigDecimal;
 
@@ -17,6 +18,7 @@ public class FuncionarioRequestDTO {
 
     @Min(0)
     private BigDecimal salario;
+    private StatusPessoaEnum status;
 
     public FuncionarioRequestDTO() {
     }
@@ -29,6 +31,7 @@ public class FuncionarioRequestDTO {
         this.email = funcionario.getEmail();
         this.cpf = funcionario.getCpf();
         this.senha = funcionario.getSenha();
+        this.status = funcionario.getStatus();
     }
 
     public String getNome() {
@@ -85,5 +88,13 @@ public class FuncionarioRequestDTO {
 
     public void setSalario(BigDecimal salario) {
         this.salario = salario;
+    }
+
+    public StatusPessoaEnum getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusPessoaEnum status) {
+        this.status = status;
     }
 }

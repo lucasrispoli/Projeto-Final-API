@@ -2,6 +2,7 @@ package org.serratec.backend.service;
 
 import org.serratec.backend.DTO.CategoriaRequestDTO;
 import org.serratec.backend.DTO.CategoriaResponseDTO;
+import org.serratec.backend.DTO.FuncionarioResponseDTO;
 import org.serratec.backend.entity.Categoria;
 import org.serratec.backend.exception.ClienteException;
 import org.serratec.backend.repository.CategoriaRepository;
@@ -62,6 +63,10 @@ public class CategoriaService {
         return categoriasDTO;
     }
 
+    public CategoriaResponseDTO listarPorId(Long id) {
+        return new CategoriaResponseDTO(verificaCatgPorId(id).get().getNome());
+    }
+
 
     public CategoriaResponseDTO alterar(Long id, CategoriaRequestDTO categoriaDTO) {
         verificaCatgPorId(id);
@@ -91,13 +96,14 @@ public class CategoriaService {
     }
 
 
-    private void verificaCatgPorId(Long id) {
+    private Optional<Categoria> verificaCatgPorId(Long id) {
         Optional<Categoria> categoria = repository.findById(id);
 
         if (categoria.isEmpty()) {
 //            Categoria NÃO EXISTE
             throw new ClienteException("MUDAR O TRATAMENTO DE ERRO, SÓ COLOQUEI PARA NÃO DAR ERRO");
         }
+        return categoria;
     }
 
 

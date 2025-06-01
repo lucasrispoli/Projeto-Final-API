@@ -88,7 +88,6 @@ public class ClienteService {
 	}
 	public ResponseEntity deletar(Long id) {
 		Optional<Cliente> cliente = repository.findById(id);
-		System.out.println(cliente.get().getId());
 		if(cliente.isPresent()) {
 			cliente.get().setStatus(StatusPessoaEnum.DELETADO);
 			repository.save(cliente.get());
