@@ -2,10 +2,15 @@ package org.serratec.backend.entity;
 
 import jakarta.persistence.*;
 import org.serratec.backend.enums.StatusPessoaEnum;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Usuario {
+public class Usuario implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +26,9 @@ public class Usuario {
 	@OneToOne
 	@JoinColumn(name = "id_perfil")
 	private Perfil perfil;
+
+	public Usuario() {
+	}
 
 	public void setPerfil(Perfil perfil) {
 		this.perfil = perfil;
@@ -86,5 +94,38 @@ public class Usuario {
 		this.cpf = cpf;
 	}
 
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of();
+	}
 
+	@Override
+	public String getPassword() {
+		return senha;
+	}
+
+	@Override
+	public String getUsername() {
+		return email;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 }
