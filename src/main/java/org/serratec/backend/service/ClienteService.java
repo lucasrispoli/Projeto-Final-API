@@ -11,6 +11,7 @@ import org.serratec.backend.exception.ClienteException;
 import org.serratec.backend.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +26,9 @@ public class ClienteService {
 
 	@Autowired
 	private EnderecoService service;
+
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 
 	public Cliente buscarClientePorID(Long id) {
 		return repository.getById(id);
@@ -55,12 +59,12 @@ public class ClienteService {
 		cliente.setTelefone(clienteRequestDTO.getTelefone());
 		cliente.setEmail(clienteRequestDTO.getEmail());
 		cliente.setCpf(clienteRequestDTO.getCpf());
-		cliente.setSenha(clienteRequestDTO.getSenha());
+		cliente.setSenha(encoder.encode(clienteRequestDTO.getSenha()));
 		cliente.setComplemento(clienteRequestDTO.getComplemento());
 		cliente.setEndereco(endereco);
 		cliente.setStatus(clienteRequestDTO.getStatus());
 		cliente = repository.save(cliente);
-
+		System.out.println(cliente.getSenha());
 		return new ClienteResponseDTO(cliente.getNome(), cliente.getTelefone(), cliente.getEmail());
 	}
 

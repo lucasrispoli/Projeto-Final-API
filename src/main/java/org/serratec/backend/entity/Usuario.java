@@ -18,6 +18,17 @@ public class Usuario {
 	@Enumerated(EnumType.STRING)
 	private StatusPessoaEnum status;
 
+	@OneToOne
+	@JoinColumn(name = "id_perfil")
+	private Perfil perfil;
+
+	public void setPerfil(Perfil perfil) {
+		this.perfil = perfil;
+	}
+
+	public Perfil getPerfil() {
+		return perfil;
+	}
 
 	public void setStatus(StatusPessoaEnum status) {
 		this.status = status;
