@@ -8,7 +8,6 @@ import jakarta.persistence.ManyToOne;
 public class Cliente extends Usuario{
 
 	private String complemento;
-	private String cep;
 
 	@ManyToOne
 	@JoinColumn(name = "id_endereco")
@@ -20,14 +19,6 @@ public class Cliente extends Usuario{
 
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
-	}
-
-	public String getCep() {
-		return cep;
-	}
-
-	public void setCep(String cep) {
-		this.cep = cep;
 	}
 
 	public Endereco getEndereco() {

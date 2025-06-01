@@ -57,7 +57,6 @@ public class ClienteService {
 		cliente.setCpf(clienteRequestDTO.getCpf());
 		cliente.setSenha(clienteRequestDTO.getSenha());
 		cliente.setComplemento(clienteRequestDTO.getComplemento());
-		cliente.setCep(clienteRequestDTO.getCep());
 		cliente.setEndereco(endereco);
 		cliente.setStatus(clienteRequestDTO.getStatus());
 		cliente = repository.save(cliente);
@@ -76,7 +75,6 @@ public class ClienteService {
 			cliente.get().setCpf(clienteRequestDTO.getCpf());
 			cliente.get().setSenha(clienteRequestDTO.getSenha());
 			cliente.get().setComplemento(clienteRequestDTO.getComplemento());
-			cliente.get().setCep(clienteRequestDTO.getCep());
 			cliente.get().setEndereco(endereco);
 			cliente.get().setStatus(clienteRequestDTO.getStatus());
 			repository.save(cliente.get());
