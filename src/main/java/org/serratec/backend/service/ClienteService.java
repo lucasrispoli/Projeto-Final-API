@@ -3,6 +3,7 @@ package org.serratec.backend.service;
 import org.serratec.backend.DTO.ClienteRequestDTO;
 import org.serratec.backend.DTO.ClienteResponseDTO;
 import org.serratec.backend.DTO.EnderecoResponseDTO;
+import org.serratec.backend.config.MailConfig;
 import org.serratec.backend.entity.Cliente;
 import org.serratec.backend.entity.Endereco;
 import org.serratec.backend.enums.StatusPessoaEnum;
@@ -31,6 +32,9 @@ public class ClienteService {
 
     @Autowired
     private BCryptPasswordEncoder encoder;
+
+    @Autowired
+    private MailConfig mailConfig;
 
 
     public Cliente buscarClientePorID(Long id) {
@@ -70,6 +74,9 @@ public class ClienteService {
         cliente.setStatus(StatusPessoaEnum.ATIVO);
         cliente.setPerfil(perfilService.buscar(Long.valueOf(2)));
         cliente = repository.save(cliente);
+
+        mailConfig.enviar(cliente.getEmail(), "Confirmação de Cadastro", "Cliente:", cliente.toString());
+
         return new ClienteResponseDTO(cliente.getNome(), cliente.getTelefone(), cliente.getEmail());
     }
 
@@ -88,6 +95,9 @@ public class ClienteService {
             cliente.get().setStatus(StatusPessoaEnum.ATIVO);
 			cliente.get().setPerfil(perfilService.buscar(Long.valueOf(2)));
             repository.save(cliente.get());
+
+            mailConfig.enviar(cliente.get().getEmail(), "Alteração no cadastro do cliente", "Cliente:", cliente.get().toString());
+
             return new ClienteResponseDTO(cliente.get().getNome(), cliente.get().getTelefone(), cliente.get().getEmail());
         }
         throw new ClienteException("Cliente não encontrado!");
@@ -98,6 +108,8 @@ public class ClienteService {
         if (cliente.isPresent()) {
             cliente.get().setStatus(StatusPessoaEnum.DELETADO);
             repository.save(cliente.get());
+
+            mailConfig.enviar(cliente.get().getEmail(), "Cliente deletado com sucesso", "Cliente:", cliente.get().toString());
             return ResponseEntity.noContent().build();
         }
         throw new ClienteException("Cliente não encontrado!");

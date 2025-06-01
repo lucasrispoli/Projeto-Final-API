@@ -1,6 +1,7 @@
 package org.serratec.backend.service;
 
 import org.serratec.backend.DTO.*;
+import org.serratec.backend.config.MailConfig;
 import org.serratec.backend.entity.Cliente;
 import org.serratec.backend.entity.PK.Carrinho;
 import org.serratec.backend.entity.Pedido;
@@ -25,9 +26,6 @@ public class PedidoService {
 	@Autowired
 	private ClienteService cService;
 
-//	@Autowired
-//	private CarrinhoService carrinhoService;
-
 	//ABRE UM PEDIDO PARA UM CLIENTE
 	public PedidoResponseDTO abrirPedido(PedidoRequestDTO pedidoResponseDTO) {
 		Pedido pedidoEntity = new Pedido();
@@ -36,6 +34,7 @@ public class PedidoService {
 		pedidoEntity.setStatus(pedidoResponseDTO.getStatus());
 		pedidoEntity.setCliente(cliente);
 		pedidoEntity = repository.save(pedidoEntity);
+
 		return new PedidoResponseDTO(pedidoEntity.getId(),pedidoEntity.getDataPedido(), pedidoEntity.getStatus());
 	}
 

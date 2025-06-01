@@ -23,7 +23,7 @@ public class Usuario implements UserDetails {
 	@Enumerated(EnumType.STRING)
 	private StatusPessoaEnum status;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "id_perfil")
 	private Perfil perfil;
 

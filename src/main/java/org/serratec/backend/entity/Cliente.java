@@ -28,4 +28,9 @@ public class Cliente extends Usuario{
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
+
+	@Override
+	public String toString() {
+		return "Cliente: " + "Nome = " + super.getNome() + ", e-mail = " + super.getEmail();
+	}
 }

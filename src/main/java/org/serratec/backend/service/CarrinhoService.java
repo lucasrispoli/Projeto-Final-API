@@ -1,6 +1,7 @@
 package org.serratec.backend.service;
 
 import org.serratec.backend.DTO.*;
+import org.serratec.backend.config.MailConfig;
 import org.serratec.backend.entity.Pedido;
 import org.serratec.backend.entity.PK.Carrinho;
 import org.serratec.backend.entity.Produto;
@@ -26,6 +27,9 @@ public class CarrinhoService {
 
     @Autowired
     private ProdutoRepository repositoryProduto;
+
+    @Autowired
+    private MailConfig mailConfig;
 
     public Carrinho inserirPedidoProduto(CarrinhoRequestDTO carrinhoDTO) {
         Pedido pedido = pedidoService.buscarPorId(carrinhoDTO.getPedido().getId());
@@ -59,6 +63,9 @@ public class CarrinhoService {
                             item.getQuantidade(), item.getDesconto()));
                             total = total.add(produto.getValor().multiply(new BigDecimal(item.getQuantidade())));
         }
+
+//        mailConfig.enviar(cliente.getEmail(), "Pedido realizado com sucesso", "Funcionário:", pedidoEntity.getItens().toString());
+
         return new CarrinhoResponseDTO(pedido.getDataPedido(), pedido.getStatus(), produtosDTO, total);
     }
 
