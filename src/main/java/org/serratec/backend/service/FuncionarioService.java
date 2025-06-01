@@ -5,11 +5,13 @@ import org.serratec.backend.DTO.FuncionarioResponseDTO;
 import org.serratec.backend.DTO.PedidoResponseDTO;
 import org.serratec.backend.entity.Funcionario;
 import org.serratec.backend.entity.Pedido;
+import org.serratec.backend.entity.Perfil;
 import org.serratec.backend.enums.StatusPessoaEnum;
 import org.serratec.backend.exception.PedidoException;
 import org.serratec.backend.exception.ProdutoException;
 import org.serratec.backend.repository.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,6 +24,12 @@ public class FuncionarioService {
     @Autowired
     private FuncionarioRepository repository;
 
+    @Autowired
+    private PerfilService perfilService;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
 
     public FuncionarioResponseDTO inserir(FuncionarioRequestDTO funcionarioDTO) {
         verificaFuncPorNome(funcionarioDTO);
@@ -31,10 +39,11 @@ public class FuncionarioService {
         funcionarioEntity.setTelefone(funcionarioDTO.getTelefone());
         funcionarioEntity.setEmail(funcionarioDTO.getEmail());
         funcionarioEntity.setCpf(funcionarioDTO.getCpf());
-        funcionarioEntity.setSenha(funcionarioDTO.getSenha());
+        funcionarioEntity.setSenha(encoder.encode(funcionarioDTO.getSenha()));
         funcionarioEntity.setCargo(funcionarioDTO.getCargo());
         funcionarioEntity.setSalario(funcionarioDTO.getSalario());
-        funcionarioEntity.setStatus(funcionarioDTO.getStatus());
+        funcionarioEntity.setStatus(StatusPessoaEnum.ATIVO);
+        funcionarioEntity.setPerfil(perfilService.buscar(Long.valueOf(3)));
 
         repository.save(funcionarioEntity);
 
@@ -54,10 +63,11 @@ public class FuncionarioService {
             funcionarioEntity.setTelefone(dto.getTelefone());
             funcionarioEntity.setEmail(dto.getEmail());
             funcionarioEntity.setCpf(dto.getCpf());
-            funcionarioEntity.setSenha(dto.getSenha());
+            funcionarioEntity.setSenha(encoder.encode(dto.getSenha()));
             funcionarioEntity.setCargo(dto.getCargo());
             funcionarioEntity.setSalario(dto.getSalario());
-            funcionarioEntity.setStatus(dto.getStatus());
+            funcionarioEntity.setStatus(StatusPessoaEnum.ATIVO);
+            funcionarioEntity.setPerfil(perfilService.buscar(Long.valueOf(3)));
 
             repository.save(funcionarioEntity);
 
@@ -115,10 +125,11 @@ public class FuncionarioService {
         funcionarioEntity.setTelefone(funcionarioDTO.getTelefone());
         funcionarioEntity.setEmail(funcionarioDTO.getEmail());
         funcionarioEntity.setCpf(funcionarioDTO.getCpf());
-        funcionarioEntity.setSenha(funcionarioDTO.getSenha());
+        funcionarioEntity.setSenha(encoder.encode(funcionarioDTO.getSenha()));
         funcionarioEntity.setCargo(funcionarioDTO.getCargo());
         funcionarioEntity.setSalario(funcionarioDTO.getSalario());
-        funcionarioEntity.setStatus(funcionarioDTO.getStatus());
+        funcionarioEntity.setStatus(StatusPessoaEnum.ATIVO);
+        funcionarioEntity.setPerfil(perfilService.buscar(Long.valueOf(3)));
 
         repository.save(funcionarioEntity);
 
@@ -129,7 +140,7 @@ public class FuncionarioService {
 
     public void deletar(Long id) {
         Funcionario funcionario =  verificaFuncPorId(id).get();
-        funcionario.setStatus(StatusPessoaEnum.DELETADO);
+        funcionario.setStatus(StatusPessoaEnum.INATIVO);
         repository.save(funcionario);
     }
 

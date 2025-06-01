@@ -4,8 +4,8 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import org.serratec.backend.entity.Cliente;
 import org.serratec.backend.entity.Endereco;
-import org.serratec.backend.enums.StatusPessoaEnum;
 
 public class ClienteRequestDTO {
 	@NotBlank
@@ -21,74 +21,74 @@ public class ClienteRequestDTO {
 
 	private String complemento;
 	private String cep;
-	private Endereco endereco;
-	private StatusPessoaEnum status;
 
-	public void setStatus(StatusPessoaEnum status) {
-		this.status = status;
+	public ClienteRequestDTO() {
 	}
 
-	public StatusPessoaEnum getStatus() {
-		return status;
-	}
-
-	public void setComplemento(String complemento) {
-		this.complemento = complemento;
-	}
-
-	public void setCep(String cep) {
+	public ClienteRequestDTO(Cliente cliente, String cep) {
+		this.nome = cliente.getNome();
+		this.telefone = cliente.getTelefone();
+		this.email = cliente.getEmail();
+		this.cpf = cliente.getCpf();
+		this.senha = cliente.getCpf();
+		this.complemento = cliente.getComplemento();
 		this.cep = cep;
 	}
 
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
+	public String getNome() {
+		return nome;
 	}
 
-	public String getComplemento() {
-		return complemento;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
-	public String getCep() {
-		return cep;
+	public String getTelefone() {
+		return telefone;
 	}
 
-	public Endereco getEndereco() {
-		return endereco;
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 
 	public String getSenha() {
 		return senha;
 	}
 
-	public String getNome() {
-		return nome;
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
-	public void setNome(String nome) {
-		this.nome = nome;
+
+	public String getComplemento() {
+		return complemento;
 	}
-	public String getTelefone() {
-		return telefone;
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
 	}
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
+
+	public String getCep() {
+		return cep;
 	}
-	public String getEmail() {
-		return email;
+
+	public void setCep(String cep) {
+		this.cep = cep;
 	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getCpf() {
-		return cpf;
-	}
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-	
-	
 
 }

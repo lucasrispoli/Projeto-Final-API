@@ -12,6 +12,14 @@ public class Perfil {
     private Long id;
     private String nome;
 
+    public Perfil() {
+    }
+
+    public Perfil(Long id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
