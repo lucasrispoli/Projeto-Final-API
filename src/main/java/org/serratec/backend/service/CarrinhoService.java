@@ -64,9 +64,10 @@ public class CarrinhoService {
                             total = total.add(produto.getValor().multiply(new BigDecimal(item.getQuantidade())));
         }
 
-//        mailConfig.enviar(cliente.getEmail(), "Pedido realizado com sucesso", "Funcionário:", pedidoEntity.getItens().toString());
+        CarrinhoResponseDTO carrinhoDTO = new CarrinhoResponseDTO(pedido.getDataPedido(), pedido.getStatus(), produtosDTO, total);
+        mailConfig.enviar(pedido.getCliente().getEmail(), "Pedido realizado com sucesso", "Itens:", carrinhoDTO.toString());
 
-        return new CarrinhoResponseDTO(pedido.getDataPedido(), pedido.getStatus(), produtosDTO, total);
+        return carrinhoDTO;
     }
 
     public ResponseEntity<Carrinho> removerPorId(Long id) {
