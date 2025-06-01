@@ -3,10 +3,10 @@ package org.serratec.backend.entity;
 import jakarta.persistence.*;
 import org.serratec.backend.enums.StatusPessoaEnum;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -96,7 +96,12 @@ public class Usuario implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of();
+		if (this.perfil != null && this.perfil.getNome() != null) {
+			// Retorna uma coleção imutável contendo apenas um elemento
+			return Collections.singletonList(new SimpleGrantedAuthority(this.perfil.getNome()));
+		}
+		// Se não houver perfil, retorna uma coleção vazia
+		return Collections.emptyList();
 	}
 
 	@Override

@@ -39,20 +39,40 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(requests -> requests
+
                         .requestMatchers("/public/**").permitAll()
-                        .requestMatchers("/funcionarios").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/funcionarios/inativos")
-                        .hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/clientes").hasAnyRole("ADMIN", "CLIENTE", "FUNCIONARIO")
-                        .requestMatchers(HttpMethod.POST, "/clientes").hasAnyRole("CLIENTE")
-                        .requestMatchers(HttpMethod.GET, "/produtos").hasAnyRole("CLIENTE")
+                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
+
+                        // Regras para ADMIN
+                        .requestMatchers("/carrinhos/**").hasRole("ADMIN")
+                        .requestMatchers("/categorias/**").hasRole("ADMIN")
+                        .requestMatchers("/clientes/**").hasRole("ADMIN")
+                        .requestMatchers("/enderecos/**").hasRole("ADMIN")
+                        .requestMatchers("/funcionarios/**").hasRole("ADMIN")
+                        .requestMatchers("/pedidos/**").hasRole("ADMIN")
+                        .requestMatchers("/produtos/**").hasRole("ADMIN")
+
+                        // Regras para CLIENTE
+                        .requestMatchers("/carrinhos/**").hasRole("CLIENTE") // CLIENTE pode "tudo de /carrinhos"
+                        .requestMatchers(HttpMethod.POST, "/clientes").hasRole("CLIENTE") // Inserir cliente
+                        .requestMatchers(HttpMethod.PUT, "/clientes").hasRole("CLIENTE") // Atualizar cliente
+                        .requestMatchers(HttpMethod.GET, "/pedidos").hasRole("CLIENTE") // Abrir pedido (GET para visualizar, assumindo "abrir" como visualizar)
+                        .requestMatchers(HttpMethod.DELETE, "/pedidos").hasRole("CLIENTE") // Cancelar pedido
+
+                        // Regras para FUNCIONARIO
+                        .requestMatchers("/produtos/**").hasRole("FUNCIONARIO") // Tudo de produtos
+                        .requestMatchers(HttpMethod.PATCH, "/pedidos").hasRole("FUNCIONARIO") // Atualizar pedidos (PATCH)
+                        .requestMatchers("/clientes/**").hasRole("FUNCIONARIO") // Tudo de clientes
+                        .requestMatchers("/enderecos/**").hasRole("FUNCIONARIO") // Tudo de enderecos
+
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers.frameOptions().disable());
 
-        http.addFilterBefore(new JwtAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), jwtUtil),
+        http.addFilterBefore(new JwtAuthenticationFilter(
+                        authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), jwtUtil),
                 UsernamePasswordAuthenticationFilter.class);
 
         http.addFilterBefore(new JwtAuthorizationFilter(
