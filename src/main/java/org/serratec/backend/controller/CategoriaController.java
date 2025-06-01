@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.serratec.backend.DTO.CategoriaRequestDTO;
 import org.serratec.backend.DTO.CategoriaResponseDTO;
+import org.serratec.backend.DTO.FuncionarioResponseDTO;
 import org.serratec.backend.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,12 @@ public class CategoriaController {
     @GetMapping
     public ResponseEntity<List<CategoriaResponseDTO>> listar() {
         return ResponseEntity.ok(service.listar());
+    }
+
+
+    @GetMapping("{id}")
+    public ResponseEntity<CategoriaResponseDTO> listarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.listarPorId(id));
     }
 
 

@@ -2,7 +2,11 @@ package org.serratec.backend.service;
 
 import org.serratec.backend.DTO.FuncionarioRequestDTO;
 import org.serratec.backend.DTO.FuncionarioResponseDTO;
+import org.serratec.backend.DTO.PedidoResponseDTO;
 import org.serratec.backend.entity.Funcionario;
+import org.serratec.backend.entity.Pedido;
+import org.serratec.backend.enums.StatusPessoaEnum;
+import org.serratec.backend.exception.PedidoException;
 import org.serratec.backend.exception.ProdutoException;
 import org.serratec.backend.repository.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +34,7 @@ public class FuncionarioService {
         funcionarioEntity.setSenha(funcionarioDTO.getSenha());
         funcionarioEntity.setCargo(funcionarioDTO.getCargo());
         funcionarioEntity.setSalario(funcionarioDTO.getSalario());
+        funcionarioEntity.setStatus(funcionarioDTO.getStatus());
 
         repository.save(funcionarioEntity);
 
@@ -52,6 +57,7 @@ public class FuncionarioService {
             funcionarioEntity.setSenha(dto.getSenha());
             funcionarioEntity.setCargo(dto.getCargo());
             funcionarioEntity.setSalario(dto.getSalario());
+            funcionarioEntity.setStatus(dto.getStatus());
 
             repository.save(funcionarioEntity);
 
@@ -69,6 +75,30 @@ public class FuncionarioService {
         List<FuncionarioResponseDTO> funcionariosDTO = new ArrayList<>();
 
         for (Funcionario p : funcionarios) {
+            if (p.getStatus() == StatusPessoaEnum.INATIVO) {
+                continue;
+            }
+            funcionariosDTO.add(new FuncionarioResponseDTO(p.getNome(), p.getTelefone(),
+                    p.getEmail(), p.getSalario()));
+        }
+        return funcionariosDTO;
+    }
+
+
+    public FuncionarioResponseDTO listarPorId(Long id) {
+        return new FuncionarioResponseDTO(verificaFuncPorId(id).get().getNome(), verificaFuncPorId(id).get().getTelefone(),
+                verificaFuncPorId(id).get().getEmail(),verificaFuncPorId(id).get().getSalario());
+    }
+
+
+    public List<FuncionarioResponseDTO> listarFuncionariosInativos() {
+        List<Funcionario> funcionarios = repository.findAll();
+        List<FuncionarioResponseDTO> funcionariosDTO = new ArrayList<>();
+
+        for (Funcionario p : funcionarios) {
+            if (p.getStatus() != StatusPessoaEnum.INATIVO) {
+                continue;
+            }
             funcionariosDTO.add(new FuncionarioResponseDTO(p.getNome(), p.getTelefone(),
                     p.getEmail(), p.getSalario()));
         }
@@ -88,6 +118,7 @@ public class FuncionarioService {
         funcionarioEntity.setSenha(funcionarioDTO.getSenha());
         funcionarioEntity.setCargo(funcionarioDTO.getCargo());
         funcionarioEntity.setSalario(funcionarioDTO.getSalario());
+        funcionarioEntity.setStatus(funcionarioDTO.getStatus());
 
         repository.save(funcionarioEntity);
 
@@ -97,18 +128,20 @@ public class FuncionarioService {
     }
 
     public void deletar(Long id) {
-        verificaFuncPorId(id);
-        repository.deleteById(id);
+        Funcionario funcionario =  verificaFuncPorId(id).get();
+        funcionario.setStatus(StatusPessoaEnum.DELETADO);
+        repository.save(funcionario);
     }
 
     //VERIFICA SE O ID DO PRODUTO INFORMADO FOI ENCONTRADO
-    private void verificaFuncPorId(Long id) {
+    private Optional<Funcionario> verificaFuncPorId(Long id) {
         Optional<Funcionario> funcionario = repository.findById(id);
 
         if (funcionario.isEmpty()) {
 //            throw new FuncionarioException("Funcionario com ID " + id + " não encontrado.");
             throw new ProdutoException("Funcionario com ID " + id + " não encontrado.");
         }
+        return funcionario;
     }
 
     //VERIFICA SE O NOME DO PRODUTO ESTA SENDO CADASTRADO NOVAMENTE

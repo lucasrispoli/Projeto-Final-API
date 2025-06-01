@@ -33,6 +33,18 @@ public class FuncionarioController {
     }
 
 
+    @GetMapping("{id}")
+    public ResponseEntity<FuncionarioResponseDTO> listarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.listarPorId(id));
+    }
+
+
+    @GetMapping("/inativos")
+    public ResponseEntity<List<FuncionarioResponseDTO>> listarInativos() {
+        return ResponseEntity.ok(service.listarFuncionariosInativos());
+    }
+
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public FuncionarioResponseDTO inserir(@Valid @RequestBody FuncionarioRequestDTO funcionario) {
