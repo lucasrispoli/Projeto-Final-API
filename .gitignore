@@ -33,4 +33,3 @@ build/
 .vscode/
 
 /h2
-/src/main/resources/*

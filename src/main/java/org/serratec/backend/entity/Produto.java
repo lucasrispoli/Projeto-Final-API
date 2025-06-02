@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 import org.serratec.backend.entity.PK.Carrinho;
+import org.serratec.backend.enums.PlataformaEnum;
 
 @Entity
 public class Produto {
@@ -16,6 +17,9 @@ public class Produto {
 	private Long id;
 	private String nome;
 	private BigDecimal valor;
+
+	@Enumerated(EnumType.STRING)
+	private PlataformaEnum plataforma;
 
 	@ManyToOne
 	@JoinColumn(name = "id_categoria")
@@ -63,5 +67,13 @@ public class Produto {
 
 	public void setPedidos(List<Carrinho> pedidos) {
 		this.pedidos = pedidos;
+	}
+
+	public PlataformaEnum getPlataforma() {
+		return plataforma;
+	}
+
+	public void setPlataforma(PlataformaEnum plataforma) {
+		this.plataforma = plataforma;
 	}
 }
