@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: projeto-final
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: posgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/projeto-final
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: posgres
+
+
+    depends_on:
+      - db
+    restart: always
+
+volumes:
+  db_data:

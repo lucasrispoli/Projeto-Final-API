@@ -12,16 +12,12 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.Arrays;
 
@@ -40,45 +36,47 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(requests -> requests
 
-                        .requestMatchers("/public/**").permitAll()
+                                .requestMatchers("/public/**").permitAll()
                                 .requestMatchers(
-                                        "/swagger-ui/**",          // Para o HTML, CSS, JS do Swagger UI
-                                        "/v3/api-docs/**",         // Para os documentos JSON/YAML da API (OpenAPI 3)
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**",
                                         "/swagger-resources/**",
                                         "/swagger-resources",
                                         "/configuration/ui",
                                         "/configuration/security",
                                         "/webjars/**"
                                 ).permitAll()
-                        .requestMatchers("/h2-console/**").permitAll()
+                                .requestMatchers("/h2-console/**").permitAll()
 //                        .requestMatchers("/carrinhos/**", "/clientes/**", "/categorias/**", "/enderecos/**", "/pedidos/**", "funcionarios/**", "/produtos/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/clientes/inserir").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/login").permitAll()
 
-                        // Regras para ADMIN
-                        .requestMatchers("/carrinhos/**").hasRole("ADMIN")
-                        .requestMatchers("/categorias/**").hasRole("ADMIN")
-                        .requestMatchers("/clientes/**").hasRole("ADMIN")
-                        .requestMatchers("/enderecos/**").hasRole("ADMIN")
-                        .requestMatchers("/funcionarios/**").hasRole("ADMIN")
-                        .requestMatchers("/pedidos/**").hasRole("ADMIN")
-                        .requestMatchers("/produtos/**").hasRole("ADMIN")
-                        .requestMatchers("/avliacoes").hasRole("ADMIN")
+                                // ROTAS DE CLIENTE
+                                .requestMatchers(HttpMethod.GET, "/produtos/listar").hasRole("CLIENTE")
+                                .requestMatchers("/carrinhos/**").hasRole("CLIENTE")
+                                .requestMatchers("/clientes/**").hasRole("CLIENTE")
+                                .requestMatchers(HttpMethod.POST, "/pedidos/**").hasRole("CLIENTE")
+                                .requestMatchers(HttpMethod.GET, "/pedidos/**").hasRole("CLIENTE")
+                                .requestMatchers(HttpMethod.DELETE, "/pedidos/**").hasRole("CLIENTE")
 
-                        // Regras para CLIENTE
-                        .requestMatchers("/carrinhos/**").hasRole("CLIENTE") // CLIENTE pode "tudo de /carrinhos"
-                        .requestMatchers(HttpMethod.POST, "/clientes").hasRole("CLIENTE") // Inserir cliente
-                        .requestMatchers(HttpMethod.PUT, "/clientes").hasRole("CLIENTE") // Atualizar cliente
-                        .requestMatchers(HttpMethod.GET, "/pedidos").hasRole("CLIENTE") // Abrir pedido (GET para visualizar, assumindo "abrir" como visualizar)
-                        .requestMatchers(HttpMethod.DELETE, "/pedidos").hasRole("CLIENTE") // Cancelar pedido
+                                // ROTAS DE FUNCIONÁRIO
+                                .requestMatchers("/produtos/**").hasRole("FUNCIONARIO")
+                                .requestMatchers(HttpMethod.PATCH, "/pedidos").hasRole("FUNCIONARIO")
+                                .requestMatchers("/clientes/**").hasRole("FUNCIONARIO")
+                                .requestMatchers("/enderecos/**").hasRole("FUNCIONARIO")
+
+                                // ROTAS DE ADMIN
+                                .requestMatchers("/carrinhos/**").hasRole("ADMIN")
+                                .requestMatchers("/categorias/**").hasRole("ADMIN")
+                                .requestMatchers("/clientes/**").hasRole("ADMIN")
+                                .requestMatchers("/enderecos/**").hasRole("ADMIN")
+                                .requestMatchers("/funcionarios/**").hasRole("ADMIN")
+                                .requestMatchers("/pedidos/**").hasRole("ADMIN")
+                                .requestMatchers("/produtos/**").hasRole("ADMIN")
+                                .requestMatchers("/avliacoes").hasRole("ADMIN")
 
 
-                        // Regras para FUNCIONARIO
-                        .requestMatchers("/produtos/**").hasRole("FUNCIONARIO") // Tudo de produtos
-                        .requestMatchers(HttpMethod.PATCH, "/pedidos").hasRole("FUNCIONARIO") // Atualizar pedidos (PATCH)
-                        .requestMatchers("/clientes/**").hasRole("FUNCIONARIO") // Tudo de clientes
-                        .requestMatchers("/enderecos/**").hasRole("FUNCIONARIO") // Tudo de enderecos
-
-                        .anyRequest().authenticated()
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers.frameOptions().disable());

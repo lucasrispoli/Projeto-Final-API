@@ -58,7 +58,7 @@ public class PedidoService {
 			List<Produto> produtos = repository.obterProdutosPorPedido(pedido.getId());
 
 			for (Produto produto : produtos) {
-					produtosDTO.add(new ProdutoResponseDTO(produto.getNome(),produto.getValor(), produto.getCategoria().getNome()));
+					produtosDTO.add(new ProdutoResponseDTO(produto.getNome(),produto.getValor(), produto.getCategoria().getNome(), produto.getPlataforma()));
 			}
 			pedidosDTO.add(new ProdutoPedidoResponseDTO(
 					pedido.getId(),
