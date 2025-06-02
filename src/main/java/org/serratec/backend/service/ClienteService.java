@@ -100,7 +100,7 @@ public class ClienteService {
         auditor.definirUsuario(Usuario.getUsuarioLogado());
         cliente = repository.save(cliente);
 
-        mailConfig.enviar(clienteRequestDTO.getEmail(), "Confirmação de Cadastro", "Cliente:", clienteRequestDTO.toString());
+        mailConfig.enviar(clienteRequestDTO.getEmail(), "Confirmação de Cadastro", cliente.getNome(),"Cliente:", clienteRequestDTO.toString());
 
         return new ClienteResponseDTO(cliente.getNome(), cliente.getTelefone(), cliente.getEmail());
     }
@@ -124,7 +124,7 @@ public class ClienteService {
             auditor.definirUsuario(Usuario.getUsuarioLogado());
             repository.save(cliente.get());
 
-            mailConfig.enviar(clienteRequestDTO.getEmail(), "Alteração no cadastro do cliente", "Cliente:", clienteRequestDTO.toString());
+            mailConfig.enviar(clienteRequestDTO.getEmail(), "Alteração no cadastro do cliente", clienteRequestDTO.getNome(),"Cliente:", clienteRequestDTO.toString());
 
             return new ClienteResponseDTO(cliente.get().getNome(), cliente.get().getTelefone(), cliente.get().getEmail());
         }
@@ -139,7 +139,7 @@ public class ClienteService {
             auditor.definirUsuario(Usuario.getUsuarioLogado());
             repository.save(cliente.get());
 
-            mailConfig.enviar(cliente.get().getEmail(), "Cliente deletado com sucesso", "Cliente:",
+            mailConfig.enviar(cliente.get().getEmail(), "Cliente deletado com sucesso", cliente.get().getNome(),"Cliente:",
                     cliente.get().getNome() + "\nemail: " + cliente.get().getEmail());
             return ResponseEntity.noContent().build();
         }

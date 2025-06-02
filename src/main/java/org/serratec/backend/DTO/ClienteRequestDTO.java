@@ -93,7 +93,7 @@ public class ClienteRequestDTO {
 
 	@Override
 	public String toString() {
-		return nome + "\n" +
-				"email: " + email + "\n";
+		return "Nome:" + nome + "\n" +
+				"Email: " + email + "\n";
 	}
 }
