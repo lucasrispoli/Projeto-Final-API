@@ -87,4 +87,11 @@ public class FuncionarioRequestDTO {
         this.salario = salario;
     }
 
+    @Override
+    public String toString() {
+        return nome + "\n" +
+                "Cargo: " + cargo + "\n" +
+                "email: " + email + "\n" +
+                "Salário: " + salario;
+    }
 }

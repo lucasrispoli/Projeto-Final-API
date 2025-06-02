@@ -5,6 +5,7 @@ import org.serratec.backend.config.MailConfig;
 import org.serratec.backend.entity.Pedido;
 import org.serratec.backend.entity.PK.Carrinho;
 import org.serratec.backend.entity.Produto;
+import org.serratec.backend.enums.StatusEnum;
 import org.serratec.backend.repository.CarrinhoRepository;
 import org.serratec.backend.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,10 +62,13 @@ public class CarrinhoService {
             produto = item.getProduto();
             produtosDTO.add(new PacoteProdutoResponseDTO(produto.getNome(), produto.getValor(), produto.getCategoria().getNome(),
                             item.getQuantidade(), item.getDesconto()));
-                            total = total.add(produto.getValor().multiply(new BigDecimal(item.getQuantidade())));
+                            total = total.add(produto.getValor().multiply(new BigDecimal(item.getQuantidade())).subtract(item.getDesconto()));
         }
+        pedido.setStatus(StatusEnum.PAGO); //Acho que na finalização do produto o correto seria trocar seu status.
+        pedidoService.atualizarStatus(pedido.getId(), pedido.getStatus());
 
         CarrinhoResponseDTO carrinhoDTO = new CarrinhoResponseDTO(pedido.getDataPedido(), pedido.getStatus(), produtosDTO, total);
+
         mailConfig.enviar(pedido.getCliente().getEmail(), "Pedido realizado com sucesso", "Itens:", carrinhoDTO.toString());
 
         return carrinhoDTO;
@@ -73,7 +77,7 @@ public class CarrinhoService {
     public ResponseEntity<Carrinho> removerPorId(Long id) {
         Optional<Carrinho> item = repository.findById(id);
         if(item.isPresent()){
-            Carrinho carrinho = item.get();
+//            Carrinho carrinho = item.get(); //Pq?
             repository.deleteById(id);
             return ResponseEntity.noContent().build();
         }

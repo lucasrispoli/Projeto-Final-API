@@ -36,32 +36,32 @@ public class ProdutoController {
 //            @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
 //            @ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
 
-    @GetMapping
+    @GetMapping("/listar")
     public ResponseEntity<List<ProdutoResponseDTO>> listar() {
         return ResponseEntity.ok(service.listar());
     }
 
 
-    @PostMapping
+    @PostMapping("/inserir")
     @ResponseStatus(HttpStatus.CREATED)
     public ProdutoResponseDTO inserir(@Valid @RequestBody ProdutoRequestDTO produto) {
         return service.inserir(produto);
     }
 
-    @PostMapping("/varios")
+    @PostMapping("/inserir/varios")
     @ResponseStatus(HttpStatus.CREATED)
     public List<ProdutoResponseDTO> inserirVarios(@Valid @RequestBody List<ProdutoRequestDTO> produtos) {
         return service.inserirVarios(produtos);
     }
 
 
-    @PutMapping("{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<ProdutoResponseDTO> atualizar (@PathVariable Long id, @Valid @RequestBody ProdutoRequestDTO produto) {
         return ResponseEntity.ok(service.alterar(id, produto));
     }
 
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> remover(@PathVariable Long id) {
         service.deletar(id);
         return ResponseEntity.noContent().build();

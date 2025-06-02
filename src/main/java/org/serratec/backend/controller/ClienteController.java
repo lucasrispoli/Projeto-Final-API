@@ -17,15 +17,19 @@ public class ClienteController {
     @Autowired
     private ClienteService service;
 
+    @GetMapping("/listar")
+    public ResponseEntity<List<ClienteResponseDTO>> listar() {
+        return service.listarClientes();
+    }
 
     @GetMapping("/listar/{id}")
     public ResponseEntity<ClienteResponseDTO> listar(@PathVariable Long id) {
         return service.listarPorId(id);
     }
 
-    @GetMapping("/listar")
-    public ResponseEntity<List<ClienteResponseDTO>> listar() {
-        return service.listarClientes();
+    @GetMapping("/listar/deletados")
+    public ResponseEntity<List<ClienteResponseDTO>> listarDeletados() {
+        return service.listarClientesDeletados();
     }
 
    @PostMapping("/inserir")

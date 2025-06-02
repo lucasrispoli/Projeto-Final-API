@@ -60,6 +60,16 @@ public class ClienteService {
         return ResponseEntity.ok(clienteResponseDTOs);
     }
 
+    public ResponseEntity<List<ClienteResponseDTO>> listarClientesDeletados() {
+        List<Cliente> clientes = repository.findAll();
+        List<ClienteResponseDTO> clienteResponseDTOs =
+                clientes.stream()
+                        .filter(cliente -> cliente.getStatus() == StatusPessoaEnum.DELETADO)
+                        .map(cliente -> new ClienteResponseDTO(cliente.getNome(), cliente.getTelefone(), cliente.getEmail()))
+                        .collect(Collectors.toList());
+        return ResponseEntity.ok(clienteResponseDTOs);
+    }
+
     public ClienteResponseDTO salvarCliente(ClienteRequestDTO clienteRequestDTO) {
         Cliente cliente = new Cliente();
         EnderecoResponseDTO enderecoDTO = service.buscar(clienteRequestDTO.getCep());
@@ -75,7 +85,7 @@ public class ClienteService {
         cliente.setPerfil(perfilService.buscar(Long.valueOf(2)));
         cliente = repository.save(cliente);
 
-        mailConfig.enviar(cliente.getEmail(), "Confirmação de Cadastro", "Cliente:", cliente.toString());
+        mailConfig.enviar(clienteRequestDTO.getEmail(), "Confirmação de Cadastro", "Cliente:", clienteRequestDTO.toString());
 
         return new ClienteResponseDTO(cliente.getNome(), cliente.getTelefone(), cliente.getEmail());
     }
@@ -93,10 +103,10 @@ public class ClienteService {
             cliente.get().setComplemento(clienteRequestDTO.getComplemento());
             cliente.get().setEndereco(endereco);
             cliente.get().setStatus(StatusPessoaEnum.ATIVO);
-			cliente.get().setPerfil(perfilService.buscar(Long.valueOf(2)));
+            cliente.get().setPerfil(perfilService.buscar(Long.valueOf(2)));
             repository.save(cliente.get());
 
-            mailConfig.enviar(cliente.get().getEmail(), "Alteração no cadastro do cliente", "Cliente:", cliente.get().toString());
+            mailConfig.enviar(clienteRequestDTO.getEmail(), "Alteração no cadastro do cliente", "Cliente:", clienteRequestDTO.toString());
 
             return new ClienteResponseDTO(cliente.get().getNome(), cliente.get().getTelefone(), cliente.get().getEmail());
         }
@@ -109,7 +119,8 @@ public class ClienteService {
             cliente.get().setStatus(StatusPessoaEnum.DELETADO);
             repository.save(cliente.get());
 
-            mailConfig.enviar(cliente.get().getEmail(), "Cliente deletado com sucesso", "Cliente:", cliente.get().toString());
+            mailConfig.enviar(cliente.get().getEmail(), "Cliente deletado com sucesso", "Cliente:",
+                    cliente.get().getNome() + "\nemail: " + cliente.get().getEmail());
             return ResponseEntity.noContent().build();
         }
         throw new ClienteException("Cliente não encontrado!");

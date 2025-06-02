@@ -16,8 +16,8 @@ public class EnderecoController {
     @Autowired
     private EnderecoService service;
 
-    @GetMapping("{cep}")
-    public ResponseEntity<EnderecoResponseDTO> buscarCep(@PathVariable String cep){
+    @GetMapping("/inserir/{cep}")
+    public ResponseEntity<EnderecoResponseDTO> buscarCep(@PathVariable String cep) {
         var endereco = service.buscar(cep);
         if( endereco != null){
             return ResponseEntity.ok(endereco);

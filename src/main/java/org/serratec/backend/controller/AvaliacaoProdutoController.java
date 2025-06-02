@@ -21,14 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping
+@RequestMapping("/avliacoes")
 public class AvaliacaoProdutoController {
 
 	@Autowired
 	private AvaliacaoProdutoRepository avaliacaoProdutoRepository;
 
 	@ResponseBody
-	@PostMapping(value = "/salvaAvaliacaoProduto")
+	@PostMapping(value = "/salvarAvaliacaoProduto")
 	public ResponseEntity<AvaliacaoProduto> salvaAvaliacaoProduto(
 			@Valid @RequestBody AvaliacaoProduto avaliacaoProduto) {
 
@@ -51,7 +51,7 @@ public class AvaliacaoProdutoController {
 	}
 
 	@ResponseBody
-	@DeleteMapping(value = "/deleteAvaliacaoUsuario/{idAvaliacao}")
+	@DeleteMapping(value = "/deletarAvaliacaoUsuario/{idAvaliacao}")
 	public ResponseEntity<?> deleteAvalicaoPessoa(@PathVariable("idAvaliacao") Long idAvaliacao) {
 
 		avaliacaoProdutoRepository.deleteById(idAvaliacao);
