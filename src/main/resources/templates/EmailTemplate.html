@@ -55,16 +55,22 @@
         }
 
         .footer {
+            background-color: #d32f2f;
             font-size: 13px;
-            color: #888;
             text-align: center;
-            border-top: 1px solid #eee;
+            border-radius: 0 0 8px 8px;
             margin-top: 30px;
             padding-top: 20px;
+
+
+        }
+
+        .rodape {
+            color: #ffffff;
         }
 
         a {
-            color: #1a73e8;
+            color: #ffffff;
             text-decoration: none;
         }
     </style>
@@ -72,7 +78,7 @@
 <body>
 <div class="container">
     <div class="brand-bar">
-        <img src="https://images.icon-icons.com/2070/PNG/512/dragon_icon_126586.png" alt="Dragon Logo"/>
+        <img src="https://img.pikbest.com/png-images/20240429/spirited-mothers-day-holiday-wishes-222024-png-images-png_10540533.png!w700wp" alt="Dragon Logo"/>
         <div class="title">Dragon Store</div>
     </div>
 
@@ -85,7 +91,7 @@
     <p th:utext="${informacoes}">Informações adicionais</p>
 
     <div class="footer">
-        <p th:text="${assinatura}">DragonStore&Cia</p>
+        <p class="rodape" th:text="${assinatura}">Ⓒ DragonStore&Cia. All rights reserved.</p>
         <p>
             <a href="mailto:darkdragonsstore@gmail.com">suporte@dragonstore.com</a> |
             <a href="https://www.redragon.store/">dragonstore.com</a>
