@@ -26,6 +26,9 @@ public class PedidoService {
 	@Autowired
 	private ClienteService cService;
 
+	@Autowired
+	private MailConfig mailConfig;
+
 	//ABRE UM PEDIDO PARA UM CLIENTE
 	public PedidoResponseDTO abrirPedido(PedidoRequestDTO pedidoRequestDTO) {
 		Pedido pedidoEntity = new Pedido();
@@ -81,8 +84,11 @@ public class PedidoService {
 	//ATUALIZA O STATUS DO PEDIDO
 	public PedidoResponseDTO atualizarStatus(Long id, StatusEnum status) {
 		var pedido = buscarPorId(id);
+		System.out.println(status);
 		pedido.setStatus(status);
+		System.out.println(pedido.toString());
 		pedido = repository.save(pedido);
+		mailConfig.enviar(pedido.getCliente().getEmail(), "Confirmação de Cadastro do Funcionário", pedido.getCliente().getNome(), "Funcionário:", pedido.toString());
 		return new PedidoResponseDTO(pedido.getId(), pedido.getDataPedido(), pedido.getStatus());
 	}
 

@@ -3,6 +3,7 @@ package org.serratec.backend.controller;
 import org.serratec.backend.DTO.PedidoRequestDTO;
 import org.serratec.backend.DTO.PedidoResponseDTO;
 import org.serratec.backend.DTO.ProdutoPedidoResponseDTO;
+import org.serratec.backend.DTO.StatusDTO;
 import org.serratec.backend.enums.StatusEnum;
 import org.serratec.backend.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,8 @@ public class PedidoController {
     }
 
     @PatchMapping("/status/{id}")
-    public ResponseEntity<PedidoResponseDTO> atualizarStatus(@PathVariable Long id, @RequestBody StatusEnum status){
-        return ResponseEntity.ok(service.atualizarStatus(id, status));
+    public ResponseEntity<PedidoResponseDTO> atualizarStatus(@PathVariable Long id, @RequestBody StatusDTO status){
+        return ResponseEntity.ok(service.atualizarStatus(id, status.getStatus()));
     }
 
     @DeleteMapping("/cancelar/{id}")
