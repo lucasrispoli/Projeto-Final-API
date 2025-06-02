@@ -41,6 +41,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requests -> requests
 
                         .requestMatchers("/public/**").permitAll()
+                                .requestMatchers(
+                                        "/swagger-ui/**",          // Para o HTML, CSS, JS do Swagger UI
+                                        "/v3/api-docs/**",         // Para os documentos JSON/YAML da API (OpenAPI 3)
+                                        "/swagger-resources/**",
+                                        "/swagger-resources",
+                                        "/configuration/ui",
+                                        "/configuration/security",
+                                        "/webjars/**"
+                                ).permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
 //                        .requestMatchers("/carrinhos/**", "/clientes/**", "/categorias/**", "/enderecos/**", "/pedidos/**", "funcionarios/**", "/produtos/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
