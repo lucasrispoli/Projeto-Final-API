@@ -26,10 +26,11 @@ public class ProdutoService {
         produtoEntity.setNome(produtoDTO.getNome());
         produtoEntity.setValor(produtoDTO.getValor());
         produtoEntity.setCategoria(produtoDTO.getCategoria());
+        produtoEntity.setPlataforma(produtoDTO.getPlataforma());
 
         repository.save(produtoEntity);
 
-        return new ProdutoResponseDTO(produtoEntity.getNome(), produtoEntity.getValor(), produtoEntity.getCategoria().getNome());
+        return new ProdutoResponseDTO(produtoEntity.getNome(), produtoEntity.getValor(), produtoEntity.getCategoria().getNome(), produtoEntity.getPlataforma());
 
     }
 
@@ -47,7 +48,7 @@ public class ProdutoService {
             repository.save(produtoEntity);
 
             ProdutoResponseDTO responseDTO = new ProdutoResponseDTO(produtoEntity.getNome(), produtoEntity.getValor(),
-                    produtoEntity.getCategoria().getNome());
+                    produtoEntity.getCategoria().getNome(), produtoEntity.getPlataforma());
 
             produtos.add(responseDTO);
         }
@@ -60,7 +61,7 @@ public class ProdutoService {
         List<ProdutoResponseDTO> produtosDTO = new ArrayList<>();
 
         for (Produto p : produtos) {
-            produtosDTO.add(new ProdutoResponseDTO(p.getNome(), p.getValor(), p.getCategoria().getNome()));
+            produtosDTO.add(new ProdutoResponseDTO(p.getNome(), p.getValor(), p.getCategoria().getNome(), p.getPlataforma()));
         }
         return produtosDTO;
     }
@@ -77,7 +78,7 @@ public class ProdutoService {
         repository.save(produtoEntity);
 
         return new ProdutoResponseDTO(produtoEntity.getNome(), produtoEntity.getValor(),
-                produtoEntity.getCategoria().getNome());
+                produtoEntity.getCategoria().getNome(), produtoEntity.getPlataforma());
 
     }
 

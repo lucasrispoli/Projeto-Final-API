@@ -62,6 +62,7 @@ public class SecurityConfig {
                         .requestMatchers("/funcionarios/**").hasRole("ADMIN")
                         .requestMatchers("/pedidos/**").hasRole("ADMIN")
                         .requestMatchers("/produtos/**").hasRole("ADMIN")
+                        .requestMatchers("/avliacoes").hasRole("ADMIN")
 
                         // Regras para CLIENTE
                         .requestMatchers("/carrinhos/**").hasRole("CLIENTE") // CLIENTE pode "tudo de /carrinhos"
@@ -69,6 +70,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/clientes").hasRole("CLIENTE") // Atualizar cliente
                         .requestMatchers(HttpMethod.GET, "/pedidos").hasRole("CLIENTE") // Abrir pedido (GET para visualizar, assumindo "abrir" como visualizar)
                         .requestMatchers(HttpMethod.DELETE, "/pedidos").hasRole("CLIENTE") // Cancelar pedido
+
 
                         // Regras para FUNCIONARIO
                         .requestMatchers("/produtos/**").hasRole("FUNCIONARIO") // Tudo de produtos

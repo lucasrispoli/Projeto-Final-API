@@ -62,7 +62,8 @@ public class CarrinhoService {
             produto = item.getProduto();
             produtosDTO.add(new PacoteProdutoResponseDTO(produto.getNome(), produto.getValor(), produto.getCategoria().getNome(),
                             item.getQuantidade(), item.getDesconto()));
-                            total = total.add(produto.getValor().multiply(new BigDecimal(item.getQuantidade())).subtract(item.getDesconto()));
+//                            total = total.add((produto.getValor().subtract(item.getDesconto())).multiply(new BigDecimal(item.getQuantidade()))); //Desconta em cada unidade
+                            total = total.add(produto.getValor().multiply(new BigDecimal(item.getQuantidade())).subtract(item.getDesconto())); //Desconta no total
         }
         pedido.setStatus(StatusEnum.PAGO); //Acho que na finalização do produto o correto seria trocar seu status.
         pedidoService.atualizarStatus(pedido.getId(), pedido.getStatus());

@@ -47,7 +47,7 @@ public class FuncionarioService {
         funcionarioEntity.setCargo(funcionarioDTO.getCargo());
         funcionarioEntity.setSalario(funcionarioDTO.getSalario());
         funcionarioEntity.setStatus(StatusPessoaEnum.ATIVO);
-        funcionarioEntity.setPerfil(perfilService.buscar(Long.valueOf(3)));
+        funcionarioEntity.setPerfil(perfilService.buscar(Long.valueOf(1)));
 
         repository.save(funcionarioEntity);
 
@@ -55,7 +55,7 @@ public class FuncionarioService {
                 "Funcionário:", funcionarioDTO.toString());
 
         return new FuncionarioResponseDTO(funcionarioEntity.getNome(), funcionarioEntity.getTelefone(),
-                funcionarioEntity.getEmail(), funcionarioEntity.getSalario());
+                funcionarioEntity.getEmail(), funcionarioEntity.getCargo(),funcionarioEntity.getSalario());
 
     }
 
@@ -79,7 +79,7 @@ public class FuncionarioService {
             repository.save(funcionarioEntity);
 
             FuncionarioResponseDTO responseDTO = new FuncionarioResponseDTO(funcionarioEntity.getNome(),
-                    funcionarioEntity.getTelefone(), funcionarioEntity.getEmail(), funcionarioEntity.getSalario());
+                    funcionarioEntity.getTelefone(), funcionarioEntity.getEmail(), funcionarioEntity.getCargo(), funcionarioEntity.getSalario());
 
             funcionarios.add(responseDTO);
 
@@ -98,7 +98,7 @@ public class FuncionarioService {
                 continue;
             }
             funcionariosDTO.add(new FuncionarioResponseDTO(p.getNome(), p.getTelefone(),
-                    p.getEmail(), p.getSalario()));
+                    p.getEmail(), p.getCargo(), p.getSalario()));
         }
         return funcionariosDTO;
     }
@@ -106,7 +106,7 @@ public class FuncionarioService {
 
     public FuncionarioResponseDTO listarPorId(Long id) {
         return new FuncionarioResponseDTO(verificaFuncPorId(id).get().getNome(), verificaFuncPorId(id).get().getTelefone(),
-                verificaFuncPorId(id).get().getEmail(), verificaFuncPorId(id).get().getSalario());
+                verificaFuncPorId(id).get().getEmail(), verificaFuncPorId(id).get().getCargo(), verificaFuncPorId(id).get().getSalario());
     }
 
 
@@ -119,7 +119,7 @@ public class FuncionarioService {
                 continue;
             }
             funcionariosDTO.add(new FuncionarioResponseDTO(p.getNome(), p.getTelefone(),
-                    p.getEmail(), p.getSalario()));
+                    p.getEmail(), p.getCargo(), p.getSalario()));
         }
         return funcionariosDTO;
     }
@@ -146,7 +146,7 @@ public class FuncionarioService {
                 "Funcionário:", funcionarioDTO.toString());
 
         return new FuncionarioResponseDTO(funcionarioEntity.getNome(), funcionarioEntity.getTelefone(),
-                funcionarioEntity.getEmail(), funcionarioEntity.getSalario());
+                funcionarioEntity.getEmail(), funcionarioEntity.getCargo(),funcionarioEntity.getSalario());
 
     }
 

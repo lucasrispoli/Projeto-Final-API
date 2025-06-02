@@ -2,6 +2,7 @@ package org.serratec.backend.DTO;
 
 import jakarta.validation.constraints.Min;
 import org.serratec.backend.entity.Funcionario;
+import org.serratec.backend.enums.CargoEnum;
 
 import java.math.BigDecimal;
 
@@ -9,7 +10,7 @@ public class FuncionarioRequestDTO {
 
 
     private String nome;
-    private String cargo;
+    private CargoEnum cargo;
     private String telefone;
     private String email;
     private String cpf;
@@ -39,11 +40,11 @@ public class FuncionarioRequestDTO {
         this.nome = nome;
     }
 
-    public String getCargo() {
+    public CargoEnum getCargo() {
         return cargo;
     }
 
-    public void setCargo(String cargo) {
+    public void setCargo(CargoEnum cargo) {
         this.cargo = cargo;
     }
 
