@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.serratec.backend.DTO.CategoriaRequestDTO;
 import org.serratec.backend.DTO.CategoriaResponseDTO;
-import org.serratec.backend.DTO.FuncionarioResponseDTO;
 import org.serratec.backend.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,39 +36,39 @@ public class CategoriaController {
 //            @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
 //            @ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
 
-    @GetMapping
+    @GetMapping("/listar")
     public ResponseEntity<List<CategoriaResponseDTO>> listar() {
         return ResponseEntity.ok(service.listar());
     }
 
 
-    @GetMapping("{id}")
+    @GetMapping("/listar/{id}")
     public ResponseEntity<CategoriaResponseDTO> listarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(service.listarPorId(id));
     }
 
 
-    @PostMapping
+    @PostMapping("/inserir")
     @ResponseStatus(HttpStatus.CREATED)
     public CategoriaResponseDTO inserir(@Valid @RequestBody CategoriaRequestDTO categoria) {
         return service.inserir(categoria);
     }
 
 
-    @PostMapping("/varios")
+    @PostMapping("/inserir/varios")
     @ResponseStatus(HttpStatus.CREATED)
     public List<CategoriaResponseDTO> inserirVarios(@Valid @RequestBody List<CategoriaRequestDTO> categorias) {
         return service.inserirVarios(categorias);
     }
 
 
-    @PutMapping("{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<CategoriaResponseDTO> atualizar (@PathVariable Long id, @Valid @RequestBody CategoriaRequestDTO categoria) {
         return ResponseEntity.ok(service.alterar(id, categoria));
     }
 
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> remover(@PathVariable Long id) {
         service.deletar(id);
         return ResponseEntity.noContent().build();

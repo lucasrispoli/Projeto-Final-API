@@ -1,10 +1,9 @@
 package org.serratec.backend.controller;
 
-import org.serratec.backend.DTO.AtualizaStatusDTO;
 import org.serratec.backend.DTO.PedidoRequestDTO;
 import org.serratec.backend.DTO.PedidoResponseDTO;
 import org.serratec.backend.DTO.ProdutoPedidoResponseDTO;
-import org.serratec.backend.entity.Pedido;
+import org.serratec.backend.enums.StatusEnum;
 import org.serratec.backend.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +25,7 @@ public class PedidoController {
     public ResponseEntity<PedidoResponseDTO> buscarPedido(@PathVariable Long id) {
         return ResponseEntity.ok(service.listarPorId(id));
     }
-    @GetMapping("/listarCliente/{id}")
+    @GetMapping("/listarPedidoPorCliente/{id}")
     public ResponseEntity<List<ProdutoPedidoResponseDTO>> buscarPedidoCliente(@PathVariable Long id) {
        return ResponseEntity.ok(service.buscarTodos(id));
     }
@@ -38,7 +37,7 @@ public class PedidoController {
     }
 
     @PatchMapping("/status/{id}")
-    public ResponseEntity<PedidoResponseDTO> atualizarStatus(@PathVariable Long id, @RequestBody AtualizaStatusDTO status){
+    public ResponseEntity<PedidoResponseDTO> atualizarStatus(@PathVariable Long id, @RequestBody StatusEnum status){
         return ResponseEntity.ok(service.atualizarStatus(id, status));
     }
 

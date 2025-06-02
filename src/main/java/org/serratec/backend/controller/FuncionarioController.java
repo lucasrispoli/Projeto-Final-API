@@ -27,45 +27,45 @@ public class FuncionarioController {
 //            @ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
 //            @ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
 
-    @GetMapping
+    @GetMapping("/listar")
     public ResponseEntity<List<FuncionarioResponseDTO>> listar() {
         return ResponseEntity.ok(service.listar());
     }
 
 
-    @GetMapping("{id}")
+    @GetMapping("/listar/{id}")
     public ResponseEntity<FuncionarioResponseDTO> listarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(service.listarPorId(id));
     }
 
 
-    @GetMapping("/inativos")
+    @GetMapping("/listar/inativos")
     public ResponseEntity<List<FuncionarioResponseDTO>> listarInativos() {
         return ResponseEntity.ok(service.listarFuncionariosInativos());
     }
 
 
-    @PostMapping
+    @PostMapping("/inserir")
     @ResponseStatus(HttpStatus.CREATED)
     public FuncionarioResponseDTO inserir(@Valid @RequestBody FuncionarioRequestDTO funcionario) {
         return service.inserir(funcionario);
     }
 
 
-    @PostMapping("/varios")
+    @PostMapping("/inserir/varios")
     @ResponseStatus(HttpStatus.CREATED)
     public List<FuncionarioResponseDTO> inserirVarios(@Valid @RequestBody List<FuncionarioRequestDTO> funcionarios) {
         return service.inserirVarios(funcionarios);
     }
 
 
-    @PutMapping("{id}")
+    @PutMapping("/atualizar/{id}")
     public ResponseEntity<FuncionarioResponseDTO> atualizar (@PathVariable Long id, @Valid @RequestBody FuncionarioRequestDTO funcionario) {
         return ResponseEntity.ok(service.alterar(id, funcionario));
     }
 
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> remover(@PathVariable Long id) {
         service.deletar(id);
         return ResponseEntity.noContent().build();

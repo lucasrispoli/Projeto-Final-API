@@ -27,11 +27,11 @@ public class PedidoService {
 	private ClienteService cService;
 
 	//ABRE UM PEDIDO PARA UM CLIENTE
-	public PedidoResponseDTO abrirPedido(PedidoRequestDTO pedidoResponseDTO) {
+	public PedidoResponseDTO abrirPedido(PedidoRequestDTO pedidoRequestDTO) {
 		Pedido pedidoEntity = new Pedido();
-		System.out.println(pedidoResponseDTO.getDataPedido());
-		Cliente cliente = cService.buscarClientePorID(pedidoResponseDTO.getCliente().getId());
-		pedidoEntity.setStatus(pedidoResponseDTO.getStatus());
+		Cliente cliente = cService.buscarClientePorID(pedidoRequestDTO.getCliente().getId());
+//		pedidoEntity.setStatus(pedidoRequestDTO.getStatus());
+		pedidoEntity.setStatus(StatusEnum.ABERTO);
 		pedidoEntity.setCliente(cliente);
 		pedidoEntity = repository.save(pedidoEntity);
 
@@ -79,9 +79,9 @@ public class PedidoService {
 	}
 
 	//ATUALIZA O STATUS DO PEDIDO
-	public PedidoResponseDTO atualizarStatus(Long id, AtualizaStatusDTO status) {
+	public PedidoResponseDTO atualizarStatus(Long id, StatusEnum status) {
 		var pedido = buscarPorId(id);
-		pedido.setStatus(status.getStatus());
+		pedido.setStatus(status);
 		pedido = repository.save(pedido);
 		return new PedidoResponseDTO(pedido.getId(), pedido.getDataPedido(), pedido.getStatus());
 	}

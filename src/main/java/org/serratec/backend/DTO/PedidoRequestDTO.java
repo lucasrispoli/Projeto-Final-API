@@ -14,8 +14,8 @@ public class PedidoRequestDTO {
     @CurrentTimestamp
     private LocalDateTime dataPedido;
 
-    @NotNull
-    private StatusEnum status;
+//    @NotNull
+//    private StatusEnum status;
     private Cliente cliente;
     private List<Carrinho> itens;
 
@@ -32,9 +32,9 @@ public class PedidoRequestDTO {
         this.dataPedido = dataPedido;
     }
 
-    public void setStatus(StatusEnum status) {
-        this.status = status;
-    }
+//    public void setStatus(StatusEnum status) {
+//        this.status = status;
+//    }
 
     public void setItens(List<Carrinho> itens) {
         this.itens = itens;
@@ -44,9 +44,9 @@ public class PedidoRequestDTO {
         return dataPedido;
     }
 
-    public StatusEnum getStatus() {
-        return status;
-    }
+//    public StatusEnum getStatus() {
+//        return status;
+//    }
 
     public List<Carrinho> getItens() {
         return itens;

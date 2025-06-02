@@ -91,4 +91,9 @@ public class ClienteRequestDTO {
 		this.cep = cep;
 	}
 
+	@Override
+	public String toString() {
+		return nome + "\n" +
+				"email: " + email + "\n";
+	}
 }

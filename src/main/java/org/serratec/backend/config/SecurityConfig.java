@@ -42,6 +42,7 @@ public class SecurityConfig {
 
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
+//                        .requestMatchers("/carrinhos/**", "/clientes/**", "/categorias/**", "/enderecos/**", "/pedidos/**", "funcionarios/**", "/produtos/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
 
                         // Regras para ADMIN

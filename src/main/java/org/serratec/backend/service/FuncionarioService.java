@@ -51,7 +51,8 @@ public class FuncionarioService {
 
         repository.save(funcionarioEntity);
 
-        mailConfig.enviar(funcionarioEntity.getEmail(), "Confirmação de Cadastro do Funcionário", "Funcionário:", funcionarioEntity.toString());
+        mailConfig.enviar(funcionarioDTO.getEmail(), "Confirmação de Cadastro do Funcionário",
+                "Funcionário:", funcionarioDTO.toString());
 
         return new FuncionarioResponseDTO(funcionarioEntity.getNome(), funcionarioEntity.getTelefone(),
                 funcionarioEntity.getEmail(), funcionarioEntity.getSalario());
@@ -77,12 +78,12 @@ public class FuncionarioService {
 
             repository.save(funcionarioEntity);
 
-            FuncionarioResponseDTO responseDTO = new FuncionarioResponseDTO(funcionarioEntity.getNome(), funcionarioEntity.getTelefone(),
-                    funcionarioEntity.getEmail(), funcionarioEntity.getSalario());
+            FuncionarioResponseDTO responseDTO = new FuncionarioResponseDTO(funcionarioEntity.getNome(),
+                    funcionarioEntity.getTelefone(), funcionarioEntity.getEmail(), funcionarioEntity.getSalario());
 
             funcionarios.add(responseDTO);
 
-            mailConfig.enviar(funcionarioEntity.getEmail(), "Confirmação de Cadastro do Funcionário", "Funcionário:", funcionarioEntity.toString());
+            mailConfig.enviar(dto.getEmail(), "Confirmação de Cadastro do Funcionário", "Funcionário:", dto.toString());
         }
 
         return funcionarios;
@@ -105,7 +106,7 @@ public class FuncionarioService {
 
     public FuncionarioResponseDTO listarPorId(Long id) {
         return new FuncionarioResponseDTO(verificaFuncPorId(id).get().getNome(), verificaFuncPorId(id).get().getTelefone(),
-                verificaFuncPorId(id).get().getEmail(),verificaFuncPorId(id).get().getSalario());
+                verificaFuncPorId(id).get().getEmail(), verificaFuncPorId(id).get().getSalario());
     }
 
 
@@ -141,7 +142,8 @@ public class FuncionarioService {
 
         repository.save(funcionarioEntity);
 
-        mailConfig.enviar(funcionarioEntity.getEmail(), "Alteração no cadastro do funcionário", "Funcionário:", funcionarioEntity.toString());
+        mailConfig.enviar(funcionarioDTO.getEmail(), "Alteração no cadastro do funcionário",
+                "Funcionário:", funcionarioDTO.toString());
 
         return new FuncionarioResponseDTO(funcionarioEntity.getNome(), funcionarioEntity.getTelefone(),
                 funcionarioEntity.getEmail(), funcionarioEntity.getSalario());
@@ -149,10 +151,12 @@ public class FuncionarioService {
     }
 
     public void deletar(Long id) {
-        Funcionario funcionario =  verificaFuncPorId(id).get();
+        Funcionario funcionario = verificaFuncPorId(id).get();
         funcionario.setStatus(StatusPessoaEnum.INATIVO);
         repository.save(funcionario);
-        mailConfig.enviar(funcionario.getEmail(), "Funcionário deletado com sucesso", "Funcionário:", funcionario.toString());
+        mailConfig.enviar(funcionario.getEmail(), "Funcionário deletado com sucesso", "Funcionário:",
+                funcionario.getNome() + "\nCargo: " + funcionario.getCargo() + "\nemail: " +
+                        funcionario.getEmail() + "\nSalário: " + funcionario.getSalario());
     }
 
     //VERIFICA SE O ID DO PRODUTO INFORMADO FOI ENCONTRADO
