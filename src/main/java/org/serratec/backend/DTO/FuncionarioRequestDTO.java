@@ -90,9 +90,9 @@ public class FuncionarioRequestDTO {
 
     @Override
     public String toString() {
-        return nome + "\n" +
+        return "Nome:" + nome + "\n" +
                 "Cargo: " + cargo + "\n" +
-                "email: " + email + "\n" +
+                "Email: " + email + "\n" +
                 "Salário: " + salario;
     }
 }

@@ -70,7 +70,7 @@ public class CarrinhoService {
 
         CarrinhoResponseDTO carrinhoDTO = new CarrinhoResponseDTO(pedido.getDataPedido(), pedido.getStatus(), produtosDTO, total);
 
-        mailConfig.enviar(pedido.getCliente().getEmail(), "Pedido realizado com sucesso", "Itens:", carrinhoDTO.toString());
+        mailConfig.enviar(pedido.getCliente().getEmail(), "Pedido realizado com sucesso", pedido.getCliente().getNome(),"Itens:", carrinhoDTO.toString());
 
         return carrinhoDTO;
     }

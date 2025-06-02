@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Dragon Store - Confirmação</title>
+    <style>
+        body {
+            font-family: 'Helvetica', Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .brand-bar {
+            background-color: #d32f2f;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .brand-bar img {
+            height: 50px;
+            margin-right: 15px;
+        }
+
+        .brand-bar .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        h3 {
+            color: #333;
+        }
+
+        h2 {
+            color: #d32f2f;
+        }
+
+        p {
+            font-size: 15px;
+            color: #444;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .footer {
+            font-size: 13px;
+            color: #888;
+            text-align: center;
+            border-top: 1px solid #eee;
+            margin-top: 30px;
+            padding-top: 20px;
+        }
+
+        a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="brand-bar">
+        <img src="https://images.icon-icons.com/2070/PNG/512/dragon_icon_126586.png" alt="Dragon Logo"/>
+        <div class="title">Dragon Store</div>
+    </div>
+
+    <h3>Olá, <span th:text="${nome}"></span>!</h3>
+
+    <p>Obrigado por se cadastrar na <strong>Dragon Store</strong>.</p>
+
+    <h2><strong>Informações Cadastrais</strong></h2>
+    <p><strong th:text="${texto}"></strong></p>
+    <p th:utext="${informacoes}">Informações adicionais</p>
+
+    <div class="footer">
+        <p th:text="${assinatura}">DragonStore&Cia</p>
+        <p>
+            <a href="mailto:darkdragonsstore@gmail.com">suporte@dragonstore.com</a> |
+            <a href="https://www.redragon.store/">dragonstore.com</a>
+        </p>
+    </div>
+</div>
+</body>
+</html>

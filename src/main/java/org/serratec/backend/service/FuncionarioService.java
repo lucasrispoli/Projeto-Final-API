@@ -51,7 +51,7 @@ public class FuncionarioService {
 
         repository.save(funcionarioEntity);
 
-        mailConfig.enviar(funcionarioDTO.getEmail(), "Confirmação de Cadastro do Funcionário",
+        mailConfig.enviar(funcionarioDTO.getEmail(), "Confirmação de Cadastro do Funcionário", funcionarioDTO.getNome(),
                 "Funcionário:", funcionarioDTO.toString());
 
         return new FuncionarioResponseDTO(funcionarioEntity.getNome(), funcionarioEntity.getTelefone(),
@@ -83,7 +83,7 @@ public class FuncionarioService {
 
             funcionarios.add(responseDTO);
 
-            mailConfig.enviar(dto.getEmail(), "Confirmação de Cadastro do Funcionário", "Funcionário:", dto.toString());
+            mailConfig.enviar(dto.getEmail(), "Confirmação de Cadastro do Funcionário", dto.getNome(), "Funcionário:", dto.toString());
         }
 
         return funcionarios;
@@ -143,7 +143,7 @@ public class FuncionarioService {
         repository.save(funcionarioEntity);
 
         mailConfig.enviar(funcionarioDTO.getEmail(), "Alteração no cadastro do funcionário",
-                "Funcionário:", funcionarioDTO.toString());
+                funcionarioDTO.getNome(),"Funcionário:", funcionarioDTO.toString());
 
         return new FuncionarioResponseDTO(funcionarioEntity.getNome(), funcionarioEntity.getTelefone(),
                 funcionarioEntity.getEmail(), funcionarioEntity.getCargo(),funcionarioEntity.getSalario());
@@ -154,7 +154,7 @@ public class FuncionarioService {
         Funcionario funcionario = verificaFuncPorId(id).get();
         funcionario.setStatus(StatusPessoaEnum.INATIVO);
         repository.save(funcionario);
-        mailConfig.enviar(funcionario.getEmail(), "Funcionário deletado com sucesso", "Funcionário:",
+        mailConfig.enviar(funcionario.getEmail(), "Funcionário deletado com sucesso", funcionario.getNome(),"Funcionário:",
                 funcionario.getNome() + "\nCargo: " + funcionario.getCargo() + "\nemail: " +
                         funcionario.getEmail() + "\nSalário: " + funcionario.getSalario());
     }
