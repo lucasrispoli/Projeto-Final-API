@@ -1,11 +1,16 @@
 package org.serratec.backend.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.springframework.transaction.annotation.Transactional;
 import org.serratec.backend.DTO.ClienteRequestDTO;
 import org.serratec.backend.DTO.ClienteResponseDTO;
 import org.serratec.backend.DTO.EnderecoResponseDTO;
 import org.serratec.backend.config.MailConfig;
+import org.serratec.backend.database.PostgreSQLAuditor;
 import org.serratec.backend.entity.Cliente;
 import org.serratec.backend.entity.Endereco;
+import org.serratec.backend.entity.Usuario;
 import org.serratec.backend.enums.StatusPessoaEnum;
 import org.serratec.backend.exception.ClienteException;
 import org.serratec.backend.repository.ClienteRepository;
@@ -35,6 +40,12 @@ public class ClienteService {
 
     @Autowired
     private MailConfig mailConfig;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Autowired
+    private PostgreSQLAuditor auditor;
 
 
     public Cliente buscarClientePorID(Long id) {
@@ -70,8 +81,10 @@ public class ClienteService {
         return ResponseEntity.ok(clienteResponseDTOs);
     }
 
+    @Transactional
     public ClienteResponseDTO salvarCliente(ClienteRequestDTO clienteRequestDTO) {
         Cliente cliente = new Cliente();
+
         EnderecoResponseDTO enderecoDTO = service.buscar(clienteRequestDTO.getCep());
         Endereco endereco = service.buscarPorId(enderecoDTO.id());
         cliente.setNome(clienteRequestDTO.getNome());
@@ -83,6 +96,8 @@ public class ClienteService {
         cliente.setEndereco(endereco);
         cliente.setStatus(StatusPessoaEnum.ATIVO);
         cliente.setPerfil(perfilService.buscar(Long.valueOf(2)));
+
+        auditor.definirUsuario(Usuario.getUsuarioLogado());
         cliente = repository.save(cliente);
 
         mailConfig.enviar(clienteRequestDTO.getEmail(), "Confirmação de Cadastro", "Cliente:", clienteRequestDTO.toString());
@@ -90,8 +105,10 @@ public class ClienteService {
         return new ClienteResponseDTO(cliente.getNome(), cliente.getTelefone(), cliente.getEmail());
     }
 
+    @Transactional
     public ClienteResponseDTO atualizarCliente(Long id, ClienteRequestDTO clienteRequestDTO) {
         var cliente = repository.findById(id);
+
         if (cliente.isPresent()) {
             EnderecoResponseDTO enderecoDTO = service.buscar(clienteRequestDTO.getCep());
             Endereco endereco = service.buscarPorId(enderecoDTO.id());
@@ -104,6 +121,7 @@ public class ClienteService {
             cliente.get().setEndereco(endereco);
             cliente.get().setStatus(StatusPessoaEnum.ATIVO);
             cliente.get().setPerfil(perfilService.buscar(Long.valueOf(2)));
+            auditor.definirUsuario(Usuario.getUsuarioLogado());
             repository.save(cliente.get());
 
             mailConfig.enviar(clienteRequestDTO.getEmail(), "Alteração no cadastro do cliente", "Cliente:", clienteRequestDTO.toString());
@@ -113,10 +131,12 @@ public class ClienteService {
         throw new ClienteException("Cliente não encontrado!");
     }
 
+    @Transactional
     public ResponseEntity deletar(Long id) {
         Optional<Cliente> cliente = repository.findById(id);
         if (cliente.isPresent()) {
             cliente.get().setStatus(StatusPessoaEnum.DELETADO);
+            auditor.definirUsuario(Usuario.getUsuarioLogado());
             repository.save(cliente.get());
 
             mailConfig.enviar(cliente.get().getEmail(), "Cliente deletado com sucesso", "Cliente:",

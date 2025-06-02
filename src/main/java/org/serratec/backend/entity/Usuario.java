@@ -2,8 +2,10 @@ package org.serratec.backend.entity;
 
 import jakarta.persistence.*;
 import org.serratec.backend.enums.StatusPessoaEnum;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
@@ -132,5 +134,13 @@ public class Usuario implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	public static String getUsuarioLogado() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null && auth.isAuthenticated()) {
+			return auth.getName();
+		}
+		return "Usuário Desconhecido";
 	}
 }
