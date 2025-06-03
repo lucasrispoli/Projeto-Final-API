@@ -91,7 +91,7 @@ public class PedidoService {
 		pedido.setStatus(status);
 		System.out.println(pedido.toString());
 		pedido = repository.save(pedido);
-		mailConfig.enviar(pedido.getCliente().getEmail(), "Confirmação de Cadastro do Funcionário", pedido.getCliente().getNome(), "Funcionário:", pedido.toString());
+		mailConfig.enviar(pedido.getCliente().getEmail(), "Atualização pedido", pedido.getCliente().getNome(), "Pedido:", pedido.toString());
 		return new PedidoResponseDTO(pedido.getId(), pedido.getDataPedido(), pedido.getStatus());
 	}
 
