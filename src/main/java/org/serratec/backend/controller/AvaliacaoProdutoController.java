@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/avliacoes")
+@RequestMapping("/avaliacoes")
 public class AvaliacaoProdutoController {
 
 	@Autowired

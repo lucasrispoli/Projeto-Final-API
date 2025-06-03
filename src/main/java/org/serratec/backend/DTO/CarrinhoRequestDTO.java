@@ -1,17 +1,24 @@
 package org.serratec.backend.DTO;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.math.BigDecimal;
+
 import org.serratec.backend.entity.Pedido;
 import org.serratec.backend.entity.Produto;
 
-import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 public class CarrinhoRequestDTO {
     private Integer quantidade;
     @JsonIgnore
+    @Min(0)
     private BigDecimal precoUnidade;
     private BigDecimal desconto;
+    @NotBlank
     private Pedido pedido;
+    @NotBlank
     private Produto produto;
 
     public CarrinhoRequestDTO(Integer quantidade, BigDecimal precoUnidade, BigDecimal desconto, Pedido pedido, Produto produto) {

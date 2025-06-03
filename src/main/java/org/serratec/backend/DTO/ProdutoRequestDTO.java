@@ -6,18 +6,20 @@ import org.serratec.backend.entity.Categoria;
 import org.serratec.backend.entity.Produto;
 
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+
 import org.serratec.backend.enums.PlataformaEnum;
 
 public class ProdutoRequestDTO {
 
-
+	@NotBlank
     private String nome;
 
     @Min(0)
     private BigDecimal valor;
-
+    @NotBlank
     private Categoria categoria;
-
+    @NotBlank
     private PlataformaEnum plataforma;
 
     public ProdutoRequestDTO() {

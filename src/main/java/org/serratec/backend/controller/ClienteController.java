@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 
 @RestController
@@ -34,12 +36,12 @@ public class ClienteController {
 
    @PostMapping("/inserir")
    @ResponseStatus(HttpStatus.CREATED)
-    public ClienteResponseDTO inserir(@RequestBody ClienteRequestDTO cliente) {
+    public ClienteResponseDTO inserir(@Valid @RequestBody ClienteRequestDTO cliente) {
        return service.salvarCliente(cliente);
    }
 
    @PutMapping("/atualizar/{id}")
-    public ResponseEntity<ClienteResponseDTO> atualizar(@PathVariable Long id, @RequestBody ClienteRequestDTO cliente) {
+    public ResponseEntity<ClienteResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody ClienteRequestDTO cliente) {
        return ResponseEntity.ok(service.atualizarCliente(id, cliente));
    }
 

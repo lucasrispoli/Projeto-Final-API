@@ -1,11 +1,11 @@
 package org.serratec.backend.DTO;
 
 import org.hibernate.validator.constraints.br.CPF;
+import org.serratec.backend.entity.Cliente;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import org.serratec.backend.entity.Cliente;
-import org.serratec.backend.entity.Endereco;
+import jakarta.validation.constraints.Size;
 
 public class ClienteRequestDTO {
 	@NotBlank
@@ -16,10 +16,12 @@ public class ClienteRequestDTO {
 	private String email;
 	@CPF
 	private String cpf;
-
+	@NotBlank
+	@Size(min = 6)
 	private String senha;
-
+	@NotBlank
 	private String complemento;
+	@NotBlank
 	private String cep;
 
 	public ClienteRequestDTO() {
