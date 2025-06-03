@@ -52,7 +52,7 @@ public class FuncionarioService {
         repository.save(funcionarioEntity);
 
         mailConfig.enviar(funcionarioDTO.getEmail(), "Confirmação de Cadastro do Funcionário", funcionarioDTO.getNome(),
-                "Funcionário:", funcionarioDTO.toString());
+                "Funcionário:", funcionarioDTO.toString(), "CadastroTemplate");
 
         return new FuncionarioResponseDTO(funcionarioEntity.getNome(), funcionarioEntity.getTelefone(),
                 funcionarioEntity.getEmail(), funcionarioEntity.getCargo(),funcionarioEntity.getSalario());
@@ -83,7 +83,7 @@ public class FuncionarioService {
 
             funcionarios.add(responseDTO);
 
-            mailConfig.enviar(dto.getEmail(), "Confirmação de Cadastro do Funcionário", dto.getNome(), "Funcionário:", dto.toString());
+            mailConfig.enviar(dto.getEmail(), "Confirmação de Cadastro do Funcionário", dto.getNome(), "Funcionário:", dto.toString(), "CadastroTemplate");
         }
 
         return funcionarios;
@@ -143,7 +143,7 @@ public class FuncionarioService {
         repository.save(funcionarioEntity);
 
         mailConfig.enviar(funcionarioDTO.getEmail(), "Alteração no cadastro do funcionário",
-                funcionarioDTO.getNome(),"Funcionário:", funcionarioDTO.toString());
+                funcionarioDTO.getNome(),"Funcionário:", funcionarioDTO.toString(), "CadastroTemplate");
 
         return new FuncionarioResponseDTO(funcionarioEntity.getNome(), funcionarioEntity.getTelefone(),
                 funcionarioEntity.getEmail(), funcionarioEntity.getCargo(),funcionarioEntity.getSalario());
@@ -156,7 +156,7 @@ public class FuncionarioService {
         repository.save(funcionario);
         mailConfig.enviar(funcionario.getEmail(), "Funcionário deletado com sucesso", funcionario.getNome(),"Funcionário:",
                 funcionario.getNome() + "\nCargo: " + funcionario.getCargo() + "\nemail: " +
-                        funcionario.getEmail() + "\nSalário: " + funcionario.getSalario());
+                        funcionario.getEmail() + "\nSalário: " + funcionario.getSalario(), "CadastroTemplate");
     }
 
     //VERIFICA SE O ID DO PRODUTO INFORMADO FOI ENCONTRADO

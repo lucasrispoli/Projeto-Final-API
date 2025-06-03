@@ -46,9 +46,10 @@ public class SecurityConfig {
                                         "/configuration/security",
                                         "/webjars/**"
                                 ).permitAll()
-                        .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/carrinhos/**", "/clientes/**", "/categorias/**", "/enderecos/**", "/pedidos/**", "funcionarios/**", "/produtos/**", "/avaliacoes/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                                .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/carrinhos/**", "/clientes/**", "/categorias/**", "/enderecos/**", "/pedidos/**", "funcionarios/**", "/produtos/**", "/autorizar/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/clientes/inserir").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/login").permitAll()
 
                                 // ROTAS DE CLIENTE
                                 .requestMatchers(HttpMethod.GET, "/produtos/listar").hasRole("CLIENTE")

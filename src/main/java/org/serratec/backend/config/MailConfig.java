@@ -20,15 +20,19 @@ public class MailConfig {
     private TemplateEngine templateEngine;
 
 
-    public void enviar(String para, String assunto, String nome, String texto, String informacoes) {
+    public void enviar(String para, String assunto, String nome, String texto, String informacoes, String template) {
         try {
             Context context = new Context();
             context.setVariable("nome", nome);
             context.setVariable("texto", texto);
-            context.setVariable("informacoes", informacoes.replace("\n", "<br>"));
-            context.setVariable("assinatura", "DragonStore&Cia");
+            informacoes = informacoes.replace("\n", "<br>");
+            informacoes = informacoes.replace(",", "<br><br>");
+            informacoes = informacoes.replace("[", "<br>");
+            informacoes = informacoes.replace("]", "<br>");
+            context.setVariable("informacoes", informacoes);
+            context.setVariable("assinatura", "família DragonStore");
 
-            String corpoHtml = templateEngine.process("EmailTemplate", context);
+            String corpoHtml = templateEngine.process(template, context);
 
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);

@@ -87,12 +87,12 @@ public class PedidoService {
 	//ATUALIZA O STATUS DO PEDIDO
 	public PedidoResponseDTO atualizarStatus(Long id, StatusEnum status) {
 		var pedido = buscarPorId(id);
-		System.out.println(status);
 		pedido.setStatus(status);
-		System.out.println(pedido.toString());
 		pedido = repository.save(pedido);
-		mailConfig.enviar(pedido.getCliente().getEmail(), "Atualização pedido", pedido.getCliente().getNome(), "Pedido:", pedido.toString());
-		return new PedidoResponseDTO(pedido.getId(), pedido.getDataPedido(), pedido.getStatus());
+		PedidoResponseDTO pedidoResponseDTO = new PedidoResponseDTO(pedido.getId(), pedido.getDataPedido(), pedido.getStatus());
+		mailConfig.enviar(pedido.getCliente().getEmail(), "Atualização pedido", pedido.getCliente().getNome(),
+				"Pedido:", pedidoResponseDTO.toString(), "CompraTemplate");
+		return pedidoResponseDTO;
 	}
 
 	//CANCELA UM PEDIDO
