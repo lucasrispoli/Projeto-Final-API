@@ -11,8 +11,7 @@ import java.util.List;
 
 public class PedidoRequestDTO {
 
-    @CurrentTimestamp
-    private LocalDateTime dataPedido;
+
     @NotNull
     private Cliente cliente;
     private List<Carrinho> itens;
@@ -26,17 +25,13 @@ public class PedidoRequestDTO {
         return cliente;
     }
 
-    public void setDataPedido(LocalDateTime dataPedido) {
-        this.dataPedido = dataPedido;
-    }
+
 
     public void setItens(List<Carrinho> itens) {
         this.itens = itens;
     }
 
-    public LocalDateTime getDataPedido() {
-        return dataPedido;
-    }
+
 
     public List<Carrinho> getItens() {
         return itens;

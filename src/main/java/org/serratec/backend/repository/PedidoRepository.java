@@ -16,7 +16,7 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long>{
     @Query(value = "SELECT * FROM PEDIDO WHERE ID_CLIENTE = :id", nativeQuery = true)
     List<Pedido> listarPedidosPorIdUsuario(Long id);
 
-    @Query(value = "SELECT pd.id , pd.nome, pd.valor, pd.id_categoria, c.nome as cat_nome\n" +
+    @Query(value = "SELECT pd.id , pd.nome, pd.valor, pd.id_categoria, pd.plataforma, c.nome as cat_nome\n" +
             "FROM PEDIDO p\n" +
             "JOIN carrinho cr on cr.id_pedido = p.id\n" +
             "JOIN produto pd on cr.id_produto = pd.id\n" +

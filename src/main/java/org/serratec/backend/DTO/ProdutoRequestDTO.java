@@ -17,9 +17,9 @@ public class ProdutoRequestDTO {
 
     @Min(0)
     private BigDecimal valor;
-    @NotBlank
+
     private Categoria categoria;
-    @NotBlank
+
     private PlataformaEnum plataforma;
 
     public ProdutoRequestDTO() {

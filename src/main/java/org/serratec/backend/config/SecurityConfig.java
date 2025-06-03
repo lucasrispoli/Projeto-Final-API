@@ -53,18 +53,19 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
 
                                 // ROTAS DE CLIENTE
-                                .requestMatchers(HttpMethod.GET, "/produtos/listar").hasRole("CLIENTE")
-                                .requestMatchers("/carrinhos/**").hasRole("CLIENTE")
-                                .requestMatchers("/clientes/**").hasRole("CLIENTE")
-                                .requestMatchers(HttpMethod.POST, "/pedidos/**").hasRole("CLIENTE")
-                                .requestMatchers(HttpMethod.GET, "/pedidos/**").hasRole("CLIENTE")
-                                .requestMatchers(HttpMethod.DELETE, "/pedidos/**").hasRole("CLIENTE")
+                                .requestMatchers(HttpMethod.GET, "/produtos/listar").hasAnyRole("CLIENTE", "ADMIN", "FUNCIONARIO")
+                                .requestMatchers("/carrinhos/**").hasAnyRole("CLIENTE","ADMIN")
+                                .requestMatchers("/clientes/**").hasAnyRole("CLIENTE", "ADMIN", "FUNCIONARIO")
+                                .requestMatchers(HttpMethod.POST, "/pedidos/**").hasAnyRole("CLIENTE", "ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/pedidos/**").hasAnyRole("CLIENTE", "ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/pedidos/**").hasAnyRole("CLIENTE", "ADMIN", "FUNCIONARIO")
 
                                 // ROTAS DE FUNCIONÁRIO
-                                .requestMatchers("/produtos/**").hasRole("FUNCIONARIO")
-                                .requestMatchers(HttpMethod.PATCH, "/pedidos").hasRole("FUNCIONARIO")
-                                .requestMatchers("/clientes/**").hasRole("FUNCIONARIO")
-                                .requestMatchers("/enderecos/**").hasRole("FUNCIONARIO")
+                                .requestMatchers("/produtos/**").hasAnyRole("FUNCIONARIO", "ADMIN")
+                                .requestMatchers(HttpMethod.PATCH, "/pedidos").hasAnyRole("FUNCIONARIO", "ADMIN")
+                                .requestMatchers("/clientes/**").hasAnyRole("FUNCIONARIO", "ADMIN")
+                                .requestMatchers("/enderecos/**").hasAnyRole("FUNCIONARIO", "ADMIN")
+                                .requestMatchers("/categorias/**").hasAnyRole("FUNCIONARIO", "ADMIN")
 
                                 // ROTAS DE ADMIN
                                 .requestMatchers("/carrinhos/**").hasRole("ADMIN")
@@ -75,6 +76,7 @@ public class SecurityConfig {
                                 .requestMatchers("/pedidos/**").hasRole("ADMIN")
                                 .requestMatchers("/produtos/**").hasRole("ADMIN")
                                 .requestMatchers("/avliacoes").hasRole("ADMIN")
+                                .requestMatchers("/**").hasRole("ADMIN")
 
 
                                 .anyRequest().authenticated()

@@ -26,7 +26,7 @@ public class FuncionarioRequestDTO {
     @Size(min = 6)
     private String senha;
 
-    @Min(0)
+    @Min(1518)
     private BigDecimal salario;
 
     public FuncionarioRequestDTO() {

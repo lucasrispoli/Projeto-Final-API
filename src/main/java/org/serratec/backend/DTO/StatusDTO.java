@@ -5,7 +5,6 @@ import org.serratec.backend.enums.StatusEnum;
 
 public class StatusDTO {
 
-    @NotBlank
     private StatusEnum status;
 
     public StatusEnum getStatus() {

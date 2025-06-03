@@ -17,6 +17,7 @@ public class Pedido {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@CurrentTimestamp
 	private LocalDateTime dataPedido;
 	
 	@Enumerated(EnumType.STRING)

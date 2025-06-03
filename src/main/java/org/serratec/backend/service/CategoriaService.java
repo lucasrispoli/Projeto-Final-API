@@ -29,7 +29,7 @@ public class CategoriaService {
 
         repository.save(categoriaEntity);
 
-        return new  CategoriaResponseDTO(categoriaEntity.getNome());
+        return new CategoriaResponseDTO(categoriaEntity.getNome());
 
     }
 
@@ -55,8 +55,8 @@ public class CategoriaService {
 
 
     public List<CategoriaResponseDTO> listar() {
-        List<Categoria> categorias =  repository.findAll();
-        List<CategoriaResponseDTO> categoriasDTO =  new ArrayList<>();
+        List<Categoria> categorias = repository.findAll();
+        List<CategoriaResponseDTO> categoriasDTO = new ArrayList<>();
 
         for (Categoria p : categorias) {
             categoriasDTO.add(new CategoriaResponseDTO(p.getNome()));
@@ -102,5 +102,14 @@ public class CategoriaService {
             throw new CategoriaException("Categoria nao encontrada");
         }
         return categoria;
+    }
+
+    public Categoria buscarCategoriaPorId(Long id) {
+        Optional<Categoria> categoria = repository.findById(id);
+        if (categoria.isPresent()) {
+            return categoria.get();
+        } else {
+            throw new CategoriaException("Categoria não encontrada com ID: " + id);
+        }
     }
 }

@@ -3,6 +3,7 @@ package org.serratec.backend.service;
 import org.serratec.backend.DTO.ProdutoRequestDTO;
 import org.serratec.backend.DTO.ProdutoResponseDTO;
 import org.serratec.backend.database.PostgreSQLAuditor;
+import org.serratec.backend.entity.Categoria;
 import org.serratec.backend.entity.Produto;
 import org.serratec.backend.entity.Usuario;
 import org.serratec.backend.exception.ProdutoException;
@@ -24,15 +25,18 @@ public class ProdutoService {
     @Autowired
     private PostgreSQLAuditor auditor;
 
+    @Autowired
+    private CategoriaService categoriaService;
+
 
     @Transactional
     public ProdutoResponseDTO inserir(ProdutoRequestDTO produtoDTO) {
         verificaProdPorNome(produtoDTO);
-
+        Categoria categoria = categoriaService.buscarCategoriaPorId(produtoDTO.getCategoria().getId());
         Produto produtoEntity = new Produto();
         produtoEntity.setNome(produtoDTO.getNome());
         produtoEntity.setValor(produtoDTO.getValor());
-        produtoEntity.setCategoria(produtoDTO.getCategoria());
+        produtoEntity.setCategoria(categoria);
         produtoEntity.setPlataforma(produtoDTO.getPlataforma());
 
         auditor.definirUsuario(Usuario.getUsuarioLogado());

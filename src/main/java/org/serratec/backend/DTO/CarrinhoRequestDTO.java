@@ -16,9 +16,9 @@ public class CarrinhoRequestDTO {
     @Min(0)
     private BigDecimal precoUnidade;
     private BigDecimal desconto;
-    @NotBlank
+
     private Pedido pedido;
-    @NotBlank
+
     private Produto produto;
 
     public CarrinhoRequestDTO(Integer quantidade, BigDecimal precoUnidade, BigDecimal desconto, Pedido pedido, Produto produto) {
