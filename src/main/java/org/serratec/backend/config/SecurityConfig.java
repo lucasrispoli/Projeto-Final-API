@@ -47,7 +47,7 @@ public class SecurityConfig {
                                         "/webjars/**"
                                 ).permitAll()
                                 .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/carrinhos/**", "/clientes/**", "/categorias/**", "/enderecos/**", "/pedidos/**", "funcionarios/**", "/produtos/**", "/autorizar/**").permitAll()
+                        .requestMatchers("/carrinhos/**", "/clientes/**", "/categorias/**", "/enderecos/**", "/pedidos/**", "funcionarios/**", "/produtos/**", "/autorizar/**" , "/avaliacoes/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/clientes/inserir").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
 
