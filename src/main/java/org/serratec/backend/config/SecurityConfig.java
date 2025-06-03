@@ -107,5 +107,4 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", corsConfiguration.applyPermitDefaultValues());
         return source;
     }
-
 }

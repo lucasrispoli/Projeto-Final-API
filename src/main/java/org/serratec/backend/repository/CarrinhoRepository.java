@@ -14,6 +14,6 @@ public interface CarrinhoRepository extends JpaRepository<Carrinho, Long> {
     @Query(value = "SELECT * FROM CARRINHO WHERE ID_PEDIDO = :pedido", nativeQuery = true)
     List<Carrinho> carregarPedidos(Long pedido);
 
-//    @Query(value = "SELECT * FROM CARRINHO WHERE ID_PEDIDO = :idPedido", nativeQuery = true)
-//    List<Carrinho> buscarItensPorIdPedido(Long idPedido);
+    @Query(value = "SELECT * FROM CARRINHO WHERE ID_PEDIDO = :idPedido", nativeQuery = true)
+    List<Carrinho> buscarItensPorIdPedido(Long idPedido);
 }

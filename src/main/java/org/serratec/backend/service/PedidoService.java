@@ -10,8 +10,11 @@ import org.serratec.backend.enums.StatusEnum;
 import org.serratec.backend.exception.PedidoException;
 import org.serratec.backend.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,5 +105,4 @@ public class PedidoService {
 		repository.save(pedido);
 		return ResponseEntity.noContent().build();
 	}
-
 }

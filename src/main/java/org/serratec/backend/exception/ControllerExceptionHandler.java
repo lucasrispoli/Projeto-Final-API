@@ -49,10 +49,21 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<Object> handleUsuarioException(ClienteException ex) {
 		return ResponseEntity.badRequest().body(ex.getMessage());
 	}
+	@ExceptionHandler(EnderecoException.class)
+		protected ResponseEntity<Object> handleEnderecoException(EnderecoException ex) {
+		return ResponseEntity.badRequest().body(ex.getMessage());
+		}
+		@ExceptionHandler(ProdutoException.class)
+		protected ResponseEntity<Object> handleProdutoException(ProdutoException ex) {
+		return ResponseEntity.badRequest().body(ex.getMessage());
+		}
 
 	@ExceptionHandler(PedidoException.class)
 	protected ResponseEntity<Object> handlePedidoException(PedidoException ex) {
 		return ResponseEntity.badRequest().body(ex.getMessage());
 	}
-
+	@ExceptionHandler(CarrinhoException.class)
+	protected ResponseEntity<Object> handleCarrinhoException(CarrinhoException ex) {
+		return ResponseEntity.badRequest().body(ex.getMessage());
+	}
 }

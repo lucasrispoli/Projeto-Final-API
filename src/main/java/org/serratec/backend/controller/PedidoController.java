@@ -46,5 +46,4 @@ public class PedidoController {
     public ResponseEntity<Void> cancelarPedido(@PathVariable Long id) {
         return service.cancelarPedido(id);
     }
-
 }
