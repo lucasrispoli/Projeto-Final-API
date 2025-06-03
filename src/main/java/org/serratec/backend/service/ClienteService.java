@@ -83,13 +83,26 @@ public class ClienteService {
 
     @Transactional
     public ClienteResponseDTO salvarCliente(ClienteRequestDTO clienteRequestDTO) {
+        Optional<Cliente> verifiCliente = repository.findByCpf(clienteRequestDTO.getCpf());
+        if (verifiCliente.isPresent()) {
+            throw new ClienteException("Cliente com CPF já cadastrado.");
+        }
+
         Cliente cliente = new Cliente();
 
         EnderecoResponseDTO enderecoDTO = service.buscar(clienteRequestDTO.getCep());
         Endereco endereco = service.buscarPorId(enderecoDTO.id());
         cliente.setNome(clienteRequestDTO.getNome());
         cliente.setTelefone(clienteRequestDTO.getTelefone());
+
+        Optional<Cliente> cl1 = repository.findByEmail(clienteRequestDTO.getEmail());
+        if (cl1.isPresent()) { throw new ClienteException("Email já cadastrado");}
+
         cliente.setEmail(clienteRequestDTO.getEmail());
+
+        Optional<Cliente> cl2 = repository.findByCpf(clienteRequestDTO.getCpf());
+        if (cl2.isPresent()) { throw new ClienteException("Email já cadastrado");}
+
         cliente.setCpf(clienteRequestDTO.getCpf());
         cliente.setSenha(encoder.encode(clienteRequestDTO.getSenha()));
         cliente.setComplemento(clienteRequestDTO.getComplemento());

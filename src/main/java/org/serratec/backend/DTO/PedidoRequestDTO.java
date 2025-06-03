@@ -30,10 +30,6 @@ public class PedidoRequestDTO {
         this.dataPedido = dataPedido;
     }
 
-//    public void setStatus(StatusEnum status) {
-//        this.status = status;
-//    }
-
     public void setItens(List<Carrinho> itens) {
         this.itens = itens;
     }
@@ -41,10 +37,6 @@ public class PedidoRequestDTO {
     public LocalDateTime getDataPedido() {
         return dataPedido;
     }
-
-//    public StatusEnum getStatus() {
-//        return status;
-//    }
 
     public List<Carrinho> getItens() {
         return itens;

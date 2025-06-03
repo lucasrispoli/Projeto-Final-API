@@ -91,7 +91,6 @@ public class CategoriaService {
         Optional<Categoria> categoria = repository.findByNome(p.getNome());
 
         if (categoria.isPresent()) {
-//           CATEGORIA JA CADASTRADA
             throw new CategoriaException("Categoria ja cadastrada");
         }
     }
@@ -100,7 +99,6 @@ public class CategoriaService {
         Optional<Categoria> categoria = repository.findById(id);
 
         if (categoria.isEmpty()) {
-//            CATEGORIA NAO FOI ENCONTRADA DE ACORDO COM O ID
             throw new CategoriaException("Categoria nao encontrada");
         }
         return categoria;

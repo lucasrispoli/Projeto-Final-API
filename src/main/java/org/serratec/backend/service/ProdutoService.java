@@ -100,7 +100,6 @@ public class ProdutoService {
         repository.deleteById(id);
     }
 
-    //VERIFICA SE O ID DO PRODUTO INFORMADO FOI ENCONTRADO
     private void verificaProdPorId(Long id) {
         Optional<Produto> produto = repository.findById(id);
 
@@ -109,7 +108,6 @@ public class ProdutoService {
         }
     }
 
-    //VERIFICA SE O NOME DO PRODUTO ESTA SENDO CADASTRADO NOVAMENTE
     private void verificaProdPorNome(ProdutoRequestDTO p) {
         Optional<Produto> produto = repository.findByNome(p.getNome());
 

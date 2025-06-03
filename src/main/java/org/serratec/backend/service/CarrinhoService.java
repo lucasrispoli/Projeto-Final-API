@@ -6,6 +6,8 @@ import org.serratec.backend.entity.Pedido;
 import org.serratec.backend.entity.PK.Carrinho;
 import org.serratec.backend.entity.Produto;
 import org.serratec.backend.enums.StatusEnum;
+import org.serratec.backend.exception.CarrinhoException;
+import org.serratec.backend.exception.PedidoException;
 import org.serratec.backend.repository.CarrinhoRepository;
 import org.serratec.backend.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +37,7 @@ public class CarrinhoService {
     public Carrinho inserirPedidoProduto(CarrinhoRequestDTO carrinhoDTO) {
         Pedido pedido = pedidoService.buscarPorId(carrinhoDTO.getPedido().getId());
         if (pedido == null) {
-            throw new IllegalArgumentException("Pedido não encontrado com o ID: " + carrinhoDTO.getPedido().getId());
+            throw new PedidoException("Pedido não encontrado com o ID: " + carrinhoDTO.getPedido().getId());
         }
 
         Produto produto = repositoryProduto.findById(carrinhoDTO.getProduto().getId())
@@ -53,6 +55,11 @@ public class CarrinhoService {
 
 
     public CarrinhoResponseDTO finalizarPedido(Long id) {
+        Optional<Carrinho> verfiCarrinho = repository.findById(id);
+        if (verfiCarrinho.isEmpty()) {
+            throw new CarrinhoException("Carrinho não encontrado");
+        }
+
         List<Carrinho> carrinho = repository.carregarPedidos(id);
         List<PacoteProdutoResponseDTO> produtosDTO = new ArrayList<>();
         BigDecimal total = BigDecimal.ZERO;
@@ -64,10 +71,10 @@ public class CarrinhoService {
             produtosDTO.add(new PacoteProdutoResponseDTO(produto.getNome(), produto.getValor(), produto.getCategoria().getNome(),
                             item.getQuantidade(), item.getDesconto()));
                             desconto = desconto.add((produto.getValor().multiply(new BigDecimal(item.getQuantidade()))).multiply(item.getDesconto()));
-                            total = total.add((produto.getValor().multiply(new BigDecimal(item.getQuantidade()))).subtract(desconto)); //Desconta em cada unidade
+                            total = total.add((produto.getValor().multiply(new BigDecimal(item.getQuantidade()))).subtract(desconto));
         }
 
-        pedido.setStatus(StatusEnum.PAGO); //Acho que na finalização do produto o correto seria trocar seu status.
+        pedido.setStatus(StatusEnum.PAGO);
         pedidoService.atualizarStatus(pedido.getId(), pedido.getStatus());
 
         CarrinhoResponseDTO carrinhoDTO = new CarrinhoResponseDTO(pedido.getDataPedido(), pedido.getStatus(), produtosDTO, total);
@@ -80,11 +87,10 @@ public class CarrinhoService {
     public ResponseEntity<Carrinho> removerPorId(Long id) {
         Optional<Carrinho> item = repository.findById(id);
         if(item.isPresent()){
-//            Carrinho carrinho = item.get(); //Pq?
             repository.deleteById(id);
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.notFound().build();
+        throw new CarrinhoException("Carrinho não encontrado");
     }
 
 

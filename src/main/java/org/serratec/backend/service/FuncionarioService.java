@@ -4,10 +4,13 @@ import org.serratec.backend.DTO.FuncionarioRequestDTO;
 import org.serratec.backend.DTO.FuncionarioResponseDTO;
 import org.serratec.backend.DTO.PedidoResponseDTO;
 import org.serratec.backend.config.MailConfig;
+import org.serratec.backend.entity.Cliente;
 import org.serratec.backend.entity.Funcionario;
 import org.serratec.backend.entity.Pedido;
 import org.serratec.backend.entity.Perfil;
 import org.serratec.backend.enums.StatusPessoaEnum;
+import org.serratec.backend.exception.ClienteException;
+import org.serratec.backend.exception.FuncionarioException;
 import org.serratec.backend.exception.PedidoException;
 import org.serratec.backend.exception.ProdutoException;
 import org.serratec.backend.repository.FuncionarioRepository;
@@ -41,7 +44,15 @@ public class FuncionarioService {
         Funcionario funcionarioEntity = new Funcionario();
         funcionarioEntity.setNome(funcionarioDTO.getNome());
         funcionarioEntity.setTelefone(funcionarioDTO.getTelefone());
+
+        Optional<Funcionario> f1 = repository.findByEmail(funcionarioDTO.getEmail());
+        if (f1.isPresent()) { throw new ClienteException("Email já cadastrado");}
+
         funcionarioEntity.setEmail(funcionarioDTO.getEmail());
+
+        Optional<Funcionario> f2 = repository.findByCpf(funcionarioDTO.getCpf());
+        if (f2.isPresent()) { throw new ClienteException("Email já cadastrado");}
+
         funcionarioEntity.setCpf(funcionarioDTO.getCpf());
         funcionarioEntity.setSenha(encoder.encode(funcionarioDTO.getSenha()));
         funcionarioEntity.setCargo(funcionarioDTO.getCargo());
@@ -68,7 +79,15 @@ public class FuncionarioService {
             Funcionario funcionarioEntity = new Funcionario();
             funcionarioEntity.setNome(dto.getNome());
             funcionarioEntity.setTelefone(dto.getTelefone());
+
+            Optional<Funcionario> f1 = repository.findByEmail(dto.getEmail());
+            if (f1.isPresent()) { throw new ClienteException("Email já cadastrado");}
+
             funcionarioEntity.setEmail(dto.getEmail());
+
+            Optional<Funcionario> f2 = repository.findByCpf(dto.getCpf());
+            if (f2.isPresent()) { throw new ClienteException("Email já cadastrado");}
+
             funcionarioEntity.setCpf(dto.getCpf());
             funcionarioEntity.setSenha(encoder.encode(dto.getSenha()));
             funcionarioEntity.setCargo(dto.getCargo());
@@ -159,24 +178,20 @@ public class FuncionarioService {
                         funcionario.getEmail() + "\nSalário: " + funcionario.getSalario(), "CadastroTemplate");
     }
 
-    //VERIFICA SE O ID DO PRODUTO INFORMADO FOI ENCONTRADO
     private Optional<Funcionario> verificaFuncPorId(Long id) {
         Optional<Funcionario> funcionario = repository.findById(id);
 
         if (funcionario.isEmpty()) {
-//            throw new FuncionarioException("Funcionario com ID " + id + " não encontrado.");
-            throw new ProdutoException("Funcionario com ID " + id + " não encontrado.");
+            throw new FuncionarioException("Funcionario com ID " + id + " não encontrado.");
         }
         return funcionario;
     }
 
-    //VERIFICA SE O NOME DO PRODUTO ESTA SENDO CADASTRADO NOVAMENTE
     private void verificaFuncPorNome(FuncionarioRequestDTO p) {
         Optional<Funcionario> funcionario = repository.findByNome(p.getNome());
 
         if (funcionario.isPresent()) {
-//            throw new FuncionarioException("Funcionario com nome '" + p.getNome() + "' já cadastrado.");
-            throw new ProdutoException("Funcionario com nome '" + p.getNome() + "' já cadastrado.");
+            throw new FuncionarioException("Funcionario com nome '" + p.getNome() + "' já cadastrado.");
         }
     }
 

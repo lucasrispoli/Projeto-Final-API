@@ -4,7 +4,6 @@ import org.serratec.backend.DTO.PedidoRequestDTO;
 import org.serratec.backend.DTO.PedidoResponseDTO;
 import org.serratec.backend.DTO.ProdutoPedidoResponseDTO;
 import org.serratec.backend.DTO.StatusDTO;
-import org.serratec.backend.enums.StatusEnum;
 import org.serratec.backend.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

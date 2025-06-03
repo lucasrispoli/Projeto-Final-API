@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.serratec.backend.entity.Pedido;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -45,25 +46,93 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
 	}
 
+
 	@ExceptionHandler(ClienteException.class)
-	protected ResponseEntity<Object> handleUsuarioException(ClienteException ex) {
-		return ResponseEntity.badRequest().body(ex.getMessage());
+	protected ResponseEntity<Object> handleClienteException(ClienteException ex) {
+		List<String> erros = List.of(ex.getMessage());
+
+		ErroResposta erroResposta = new ErroResposta(HttpStatus.BAD_REQUEST.value(),"Erro no cliente",
+				LocalDateTime.now(), erros);
+		return new ResponseEntity<>(erroResposta, HttpStatus.BAD_REQUEST);
 	}
+
+
+	@ExceptionHandler(CategoriaException.class)
+	protected ResponseEntity<Object> handleClienteException(CategoriaException ex) {
+		List<String> erros = List.of(ex.getMessage());
+
+		ErroResposta erroResposta = new ErroResposta(HttpStatus.BAD_REQUEST.value(),"Erro na categoria",
+				LocalDateTime.now(), erros);
+		return new ResponseEntity<>(erroResposta, HttpStatus.BAD_REQUEST);
+	}
+
+
+	@ExceptionHandler(CarrinhoException.class)
+	protected ResponseEntity<Object> handleClienteException(CarrinhoException ex) {
+		List<String> erros = List.of(ex.getMessage());
+
+		ErroResposta erroResposta = new ErroResposta(HttpStatus.BAD_REQUEST.value(),"Erro no carrinho",
+				LocalDateTime.now(), erros);
+		return new ResponseEntity<>(erroResposta, HttpStatus.BAD_REQUEST);
+	}
+
+
 	@ExceptionHandler(EnderecoException.class)
-		protected ResponseEntity<Object> handleEnderecoException(EnderecoException ex) {
-		return ResponseEntity.badRequest().body(ex.getMessage());
-		}
-		@ExceptionHandler(ProdutoException.class)
-		protected ResponseEntity<Object> handleProdutoException(ProdutoException ex) {
-		return ResponseEntity.badRequest().body(ex.getMessage());
-		}
+	protected ResponseEntity<Object> handleClienteException(EnderecoException ex) {
+		List<String> erros = List.of(ex.getMessage());
+
+		ErroResposta erroResposta = new ErroResposta(HttpStatus.BAD_REQUEST.value(),"Erro no endereco",
+				LocalDateTime.now(), erros);
+		return new ResponseEntity<>(erroResposta, HttpStatus.BAD_REQUEST);
+	}
+
+
+	@ExceptionHandler(FuncionarioException.class)
+	protected ResponseEntity<Object> handleClienteException(FuncionarioException ex) {
+		List<String> erros = List.of(ex.getMessage());
+
+		ErroResposta erroResposta = new ErroResposta(HttpStatus.BAD_REQUEST.value(),"Erro no funcionário",
+				LocalDateTime.now(), erros);
+		return new ResponseEntity<>(erroResposta, HttpStatus.BAD_REQUEST);
+	}
+
 
 	@ExceptionHandler(PedidoException.class)
-	protected ResponseEntity<Object> handlePedidoException(PedidoException ex) {
-		return ResponseEntity.badRequest().body(ex.getMessage());
+	protected ResponseEntity<Object> handleClienteException(PedidoException ex) {
+		List<String> erros = List.of(ex.getMessage());
+
+		ErroResposta erroResposta = new ErroResposta(HttpStatus.BAD_REQUEST.value(),"Erro no pedido",
+				LocalDateTime.now(), erros);
+		return new ResponseEntity<>(erroResposta, HttpStatus.BAD_REQUEST);
 	}
-	@ExceptionHandler(CarrinhoException.class)
-	protected ResponseEntity<Object> handleCarrinhoException(CarrinhoException ex) {
-		return ResponseEntity.badRequest().body(ex.getMessage());
+
+
+	@ExceptionHandler(PerfilException.class)
+	protected ResponseEntity<Object> handleClienteException(PerfilException ex) {
+		List<String> erros = List.of(ex.getMessage());
+
+		ErroResposta erroResposta = new ErroResposta(HttpStatus.BAD_REQUEST.value(),"Erro no perfil",
+				LocalDateTime.now(), erros);
+		return new ResponseEntity<>(erroResposta, HttpStatus.BAD_REQUEST);
 	}
+
+
+	@ExceptionHandler(ProdutoException.class)
+	protected ResponseEntity<Object> handleClienteException(ProdutoException ex) {
+		List<String> erros = List.of(ex.getMessage());
+
+		ErroResposta erroResposta = new ErroResposta(HttpStatus.BAD_REQUEST.value(),"Erro no produto",
+				LocalDateTime.now(), erros);
+		return new ResponseEntity<>(erroResposta, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(EnumException.class)
+	protected ResponseEntity<Object> handleClienteException(EnumException ex) {
+		List<String> erros = List.of(ex.getMessage());
+
+		ErroResposta erroResposta = new ErroResposta(HttpStatus.BAD_REQUEST.value(),"Erro no enum utilizado",
+				LocalDateTime.now(), erros);
+		return new ResponseEntity<>(erroResposta, HttpStatus.BAD_REQUEST);
+	}
+
 }

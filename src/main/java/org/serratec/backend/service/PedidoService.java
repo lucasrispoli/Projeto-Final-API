@@ -7,6 +7,7 @@ import org.serratec.backend.entity.PK.Carrinho;
 import org.serratec.backend.entity.Pedido;
 import org.serratec.backend.entity.Produto;
 import org.serratec.backend.enums.StatusEnum;
+import org.serratec.backend.exception.EnumException;
 import org.serratec.backend.exception.PedidoException;
 import org.serratec.backend.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,9 @@ public class PedidoService {
 	@Autowired
 	private MailConfig mailConfig;
 
-	//ABRE UM PEDIDO PARA UM CLIENTE
 	public PedidoResponseDTO abrirPedido(PedidoRequestDTO pedidoRequestDTO) {
 		Pedido pedidoEntity = new Pedido();
 		Cliente cliente = cService.buscarClientePorID(pedidoRequestDTO.getCliente().getId());
-//		pedidoEntity.setStatus(pedidoRequestDTO.getStatus());
 		pedidoEntity.setStatus(StatusEnum.ABERTO);
 		pedidoEntity.setCliente(cliente);
 		pedidoEntity = repository.save(pedidoEntity);
@@ -44,7 +43,6 @@ public class PedidoService {
 		return new PedidoResponseDTO(pedidoEntity.getId(),pedidoEntity.getDataPedido(), pedidoEntity.getStatus());
 	}
 
-	//LISTA UM PEDIDO POR ID
 	public PedidoResponseDTO listarPorId(Long id) {
 		Optional<Pedido> pedido = repository.findById(id);
 		if(!pedido.isPresent()){
@@ -54,9 +52,13 @@ public class PedidoService {
 		return new PedidoResponseDTO(pedido.get().getId(),pedido.get().getDataPedido(),pedido.get().getStatus());
 	}
 
-	//LISTAR PEDIDOS POR ID DO CLIENTE
 	public List<ProdutoPedidoResponseDTO> buscarTodos(Long idCliente) {
 	List<Pedido> pedidos = repository.listarPedidosPorIdUsuario(idCliente);
+
+	if (pedidos.isEmpty()) {
+		throw new PedidoException("Usuário não possui pedidos cadastrados");
+	}
+
 	List<ProdutoPedidoResponseDTO> pedidosDTO = new ArrayList<>();
 
 		for (Pedido pedido : pedidos) {
@@ -75,7 +77,6 @@ public class PedidoService {
 		return pedidosDTO;
 	}
 
-	//BUSCA UM PEDIDO POR ID PARA O CARRINHO
 	public Pedido buscarPorId(Long id) {
 		Optional<Pedido> pedido = repository.findById(id);
 		if (!pedido.isPresent()) {
@@ -84,9 +85,11 @@ public class PedidoService {
 		return pedido.get();
 	}
 
-	//ATUALIZA O STATUS DO PEDIDO
 	public PedidoResponseDTO atualizarStatus(Long id, StatusEnum status) {
 		var pedido = buscarPorId(id);
+		if (status != StatusEnum.ENVIADO && status != StatusEnum.ENTREGUE) {
+			throw new EnumException("Status inválido!");
+		}
 		pedido.setStatus(status);
 		pedido = repository.save(pedido);
 		PedidoResponseDTO pedidoResponseDTO = new PedidoResponseDTO(pedido.getId(), pedido.getDataPedido(), pedido.getStatus());
@@ -95,7 +98,6 @@ public class PedidoService {
 		return pedidoResponseDTO;
 	}
 
-	//CANCELA UM PEDIDO
 	public ResponseEntity<Void> cancelarPedido(Long id) {
 		var pedido = buscarPorId(id);
 		if (pedido.getStatus().equals(StatusEnum.CANCELADO)) {

@@ -12,7 +12,6 @@ public class UsuarioDetalheImpl implements UserDetailsService {
 
     private UsuarioRepository repository;
 
-    //Injeção de dependência do repositório de usuários
     public UsuarioDetalheImpl(UsuarioRepository usuarioRepository) {
         this.repository = usuarioRepository;
     }
