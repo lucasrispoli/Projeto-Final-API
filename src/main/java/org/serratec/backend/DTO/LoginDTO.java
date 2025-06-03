@@ -1,7 +1,11 @@
 package org.serratec.backend.DTO;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class LoginDTO {
+	@NotBlank
     private String username;
+	@NotBlank
     private String password;
 
     public LoginDTO() {

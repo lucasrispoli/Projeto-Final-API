@@ -38,7 +38,7 @@ public class PedidoController {
     }
 
     @PatchMapping("/status/{id}")
-    public ResponseEntity<PedidoResponseDTO> atualizarStatus(@PathVariable Long id, @RequestBody StatusDTO status){
+    public ResponseEntity<PedidoResponseDTO> atualizarStatus(@PathVariable Long id, @Valid @RequestBody StatusDTO status){
         return ResponseEntity.ok(service.atualizarStatus(id, status.getStatus()));
     }
 

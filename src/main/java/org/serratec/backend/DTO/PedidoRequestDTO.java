@@ -13,9 +13,7 @@ public class PedidoRequestDTO {
 
     @CurrentTimestamp
     private LocalDateTime dataPedido;
-
-//    @NotNull
-//    private StatusEnum status;
+    @NotNull
     private Cliente cliente;
     private List<Carrinho> itens;
 

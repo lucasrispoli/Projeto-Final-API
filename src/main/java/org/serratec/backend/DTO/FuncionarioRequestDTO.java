@@ -1,19 +1,29 @@
 package org.serratec.backend.DTO;
 
-import jakarta.validation.constraints.Min;
+import java.math.BigDecimal;
+
+import org.hibernate.validator.constraints.br.CPF;
 import org.serratec.backend.entity.Funcionario;
 import org.serratec.backend.enums.CargoEnum;
 
-import java.math.BigDecimal;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class FuncionarioRequestDTO {
 
-
+	@NotBlank	
     private String nome;
     private CargoEnum cargo;
+    @NotBlank
     private String telefone;
+    @Email
     private String email;
+    @CPF
     private String cpf;
+    @NotBlank
+    @Size(min = 6)
     private String senha;
 
     @Min(0)
