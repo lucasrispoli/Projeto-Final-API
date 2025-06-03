@@ -51,7 +51,6 @@ public class CarrinhoService {
         return repository.save(carrinho);
     }
 
-
     public CarrinhoResponseDTO finalizarPedido(Long id) {
         List<Carrinho> carrinho = repository.carregarPedidos(id);
         List<PacoteProdutoResponseDTO> produtosDTO = new ArrayList<>();
@@ -84,13 +83,5 @@ public class CarrinhoService {
         }
         return ResponseEntity.notFound().build();
     }
+    }
 
-//    public List<CarrinhoResponseDTO> buscarItensPorIdCliente(Long idCliente) {
-//        List<Carrinho> carrinhos = repository.buscarItensPorIdPedido(idCliente);
-//        if (carrinhos.isEmpty()) {
-//            throw new IllegalArgumentException("Nenhum item encontrado para o cliente com ID: " + idCliente);
-//        }
-//
-//        return null;
-//    }
-}
