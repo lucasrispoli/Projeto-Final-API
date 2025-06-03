@@ -44,26 +44,29 @@ public class CarrinhoService {
         Carrinho carrinho = new Carrinho();
         carrinho.setQuantidade(carrinhoDTO.getQuantidade());
         carrinho.setPrecoUnidade(produto.getValor());
-        carrinho.setDesconto(carrinhoDTO.getDesconto());
+        carrinho.setDesconto(descontar(carrinho.getQuantidade(),carrinhoDTO.getDesconto()));
         carrinho.setPedido(pedido);
         carrinho.setProduto(produto);
 
         return repository.save(carrinho);
     }
 
+
     public CarrinhoResponseDTO finalizarPedido(Long id) {
         List<Carrinho> carrinho = repository.carregarPedidos(id);
         List<PacoteProdutoResponseDTO> produtosDTO = new ArrayList<>();
         BigDecimal total = BigDecimal.ZERO;
+        BigDecimal desconto = BigDecimal.ZERO;
         Pedido pedido = carrinho.get(0).getPedido();
         Produto produto;
         for (Carrinho item : carrinho) {
             produto = item.getProduto();
             produtosDTO.add(new PacoteProdutoResponseDTO(produto.getNome(), produto.getValor(), produto.getCategoria().getNome(),
                             item.getQuantidade(), item.getDesconto()));
-//                            total = total.add((produto.getValor().subtract(item.getDesconto())).multiply(new BigDecimal(item.getQuantidade()))); //Desconta em cada unidade
-                            total = total.add(produto.getValor().multiply(new BigDecimal(item.getQuantidade())).subtract(item.getDesconto())); //Desconta no total
+                            desconto = desconto.add((produto.getValor().multiply(new BigDecimal(item.getQuantidade()))).multiply(item.getDesconto()));
+                            total = total.add((produto.getValor().multiply(new BigDecimal(item.getQuantidade()))).subtract(desconto)); //Desconta em cada unidade
         }
+
         pedido.setStatus(StatusEnum.PAGO); //Acho que na finalização do produto o correto seria trocar seu status.
         pedidoService.atualizarStatus(pedido.getId(), pedido.getStatus());
 
@@ -83,5 +86,15 @@ public class CarrinhoService {
         }
         return ResponseEntity.notFound().build();
     }
+
+
+    private BigDecimal descontar(Integer quantidade, BigDecimal desconto) {
+        if (quantidade>1) {
+            return BigDecimal.valueOf(0.05);
+        } else if (quantidade >= 3) {
+            return BigDecimal.valueOf(0.1);
+        }
+        return BigDecimal.valueOf(0);
     }
 
+}
