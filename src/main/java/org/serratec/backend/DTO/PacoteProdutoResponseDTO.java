@@ -7,7 +7,7 @@ public record PacoteProdutoResponseDTO(String nome, BigDecimal valor, String cat
     @Override
     public String toString() {
         return nome + "\n" +
-                "Valor:" + valor + "\n" +
+                "Valor: R$" + valor + "\n" +
                 "Categoria: " + categoria + "\n" +
                 "Quantidade: " + quantidade + "\n" +
                 "Desconto: " + desconto;
