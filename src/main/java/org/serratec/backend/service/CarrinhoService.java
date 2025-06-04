@@ -55,31 +55,53 @@ public class CarrinhoService {
 
 
     public CarrinhoResponseDTO finalizarPedido(Long id) {
-        Optional<Carrinho> verfiCarrinho = repository.findById(id);
-        if (verfiCarrinho.isEmpty()) {
-            throw new CarrinhoException("Carrinho não encontrado");
-        }
-
         List<Carrinho> carrinho = repository.carregarPedidos(id);
         List<PacoteProdutoResponseDTO> produtosDTO = new ArrayList<>();
         BigDecimal total = BigDecimal.ZERO;
         BigDecimal desconto = BigDecimal.ZERO;
+
+        if (carrinho.isEmpty()) {
+            throw new CarrinhoException("Carrinho vazio");
+        }
+
         Pedido pedido = carrinho.get(0).getPedido();
-        Produto produto;
+
         for (Carrinho item : carrinho) {
-            produto = item.getProduto();
-            produtosDTO.add(new PacoteProdutoResponseDTO(produto.getNome(), produto.getValor(), produto.getCategoria().getNome(),
-                            item.getQuantidade(), item.getDesconto()));
-                            desconto = desconto.add((produto.getValor().multiply(new BigDecimal(item.getQuantidade()))).multiply(item.getDesconto()));
-                            total = total.add((produto.getValor().multiply(new BigDecimal(item.getQuantidade()))).subtract(desconto));
+            Produto produto = item.getProduto();
+            BigDecimal valorBruto = produto.getValor().multiply(BigDecimal.valueOf(item.getQuantidade()));
+            BigDecimal valorDesconto = valorBruto.multiply(item.getDesconto());
+            BigDecimal valorFinal = valorBruto.subtract(valorDesconto);
+
+            produtosDTO.add(new PacoteProdutoResponseDTO(
+                    produto.getNome(),
+                    produto.getValor(),
+                    produto.getCategoria().getNome(),
+                    item.getQuantidade(),
+                    item.getDesconto()
+            ));
+
+            desconto = desconto.add(valorDesconto);
+            total = total.add(valorFinal);
         }
 
         pedido.setStatus(StatusEnum.PAGO);
-        pedidoService.atualizarStatus(pedido.getId(), pedido.getStatus());
+        // pedidoService.atualizarStatus(pedido.getId(), pedido.getStatus());
 
-        CarrinhoResponseDTO carrinhoDTO = new CarrinhoResponseDTO(pedido.getDataPedido(), pedido.getStatus(), produtosDTO, total);
+        CarrinhoResponseDTO carrinhoDTO = new CarrinhoResponseDTO(
+                pedido.getDataPedido(),
+                pedido.getStatus(),
+                produtosDTO,
+                total
+        );
 
-        mailConfig.enviar(pedido.getCliente().getEmail(), "Pedido realizado com sucesso", pedido.getCliente().getNome(),"Itens:", carrinhoDTO.toString(), "CompraTemplate");
+        mailConfig.enviar(
+                pedido.getCliente().getEmail(),
+                "Pedido realizado com sucesso",
+                pedido.getCliente().getNome(),
+                "Itens:",
+                carrinhoDTO.toString(),
+                "CompraTemplate"
+        );
 
         return carrinhoDTO;
     }
