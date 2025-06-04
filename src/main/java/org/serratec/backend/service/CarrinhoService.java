@@ -85,7 +85,7 @@ public class CarrinhoService {
         }
 
         pedido.setStatus(StatusEnum.PAGO);
-        // pedidoService.atualizarStatus(pedido.getId(), pedido.getStatus());
+        pedidoService.atualizarStatus(pedido.getId(), pedido.getStatus());
 
         CarrinhoResponseDTO carrinhoDTO = new CarrinhoResponseDTO(
                 pedido.getDataPedido(),

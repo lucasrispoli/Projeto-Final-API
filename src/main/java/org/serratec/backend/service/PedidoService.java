@@ -87,7 +87,7 @@ public class PedidoService {
 
 	public PedidoResponseDTO atualizarStatus(Long id, StatusEnum status) {
 		var pedido = buscarPorId(id);
-		if (status != StatusEnum.ENVIADO && status != StatusEnum.ENTREGUE) {
+		if (status != StatusEnum.ENVIADO && status != StatusEnum.ENTREGUE && status !=StatusEnum.PAGO) {
 			throw new EnumException("Status inválido!");
 		}
 		pedido.setStatus(status);
